@@ -1,0 +1,32 @@
+.gradle
+build/
+generated/
+generated-sources/
+generated-classes/
+generated-classes-apt/
+buildPlugins
+classes
+out
+.idea
+*.info
+*.iml
+*.ipr
+*.iws
+*.ids
+*.orig
+target/
+# Ignore Gradle GUI config
+gradle-app.setting
+gradle.properties
+
+#ignore thymol custom config
+thymol-config.js
+
+#ignore spring boot custom config
+spring-boot-config/
+
+
+node_modules/
+apps/webapps/common/src/main/resources/static/static/assets/global/plugins/*
+apps/webapps/backoffice/src/main/resources/static/static/assets/global/plugins/*
+apps/webapps/frontend/src/main/resources/static/static/assets/global/plugins/*

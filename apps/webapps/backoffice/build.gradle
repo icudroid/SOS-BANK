@@ -1,0 +1,51 @@
+group 'net.dkahn.starter.apps.webapps'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:0.10'
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '0.12.2'
+    npmVersion = '2.7.5'
+    download = true
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile project(':apps:webapps:modules:security:webapp')
+    compile project(':apps:webapps:common')
+    compile project(':tools:common')
+}
+
+task npmPackages(type: NpmTask) {
+    description = "Install Node.js packages"
+    args = [ 'install' ]
+    inputs.files file('package.json')
+    outputs.files file('node_modules')
+}
+
+task bowerInstall(type: NodeTask) {
+    script = file('node_modules/bower/bin/bower')
+    args = ['install']
+    dependsOn npmPackages
+}
+
+processResources.dependsOn bowerInstall
+
+clean.delete << file('node_modules')
+clean.delete << file('src/main/resources/static/static/assets/global/plugins')
+
+bootRepackage.enabled = true

@@ -1,0 +1,27 @@
+{
+  "login":{
+    "message":{
+      "logout":"Vous avez été déconnecté",
+      "error":"Mauvais login ou mot de passe. Veuillez réessayer."
+    },
+    "placeholder":{
+      "username":"Identifiant",
+      "password":"Mot de passe"
+    },
+    "login":{
+      "btn":"Se connecter"
+    },
+    "required":{
+      "username":"L’identifiant est requis",
+      "password":"Le mot de passe est requis"
+    }
+  },
+
+  "sidebar":{
+    "home":"Accueil"
+  },
+  "menu":{
+    "logout":"Se déconnecter"
+  }
+
+}

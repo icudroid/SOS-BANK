@@ -1,0 +1,5 @@
+{
+<th:block th:each="i18n,iterStat : ${allI18nEnumNeeded}">
+    [[${i18n.name()}]] : [[#{${i18n.getClass().getSimpleName()+'.'+i18n.name()}}]]<th:block th:if="${!iterStat.last}">,</th:block>
+</th:block>
+};

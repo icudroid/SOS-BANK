@@ -1,0 +1,104 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">
+            Création d'un profil
+    </h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+
+            <form role="form" class="form-horizontal" th:object="${profile}" id="create-profile-form" th:action="@{/admin/profile/create}" >
+
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="form-group" th:class="${#fields.hasErrors('name')}? 'form-group has-error':'form-group'">
+                    <label class="col-md-3 control-label">Nom</label>
+                    <div class="col-md-9">
+                        <input type="text" th:field="*{name}" class="form-control"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</span>
+                    </div>
+                </div>
+
+
+                <div class="form-group" th:class="${#fields.hasErrors('description')}? 'form-group has-error':'form-group'">
+                    <label class="col-md-3 control-label">Description</label>
+                    <div class="col-md-9">
+                        <textarea th:field="*{description}" class="form-control"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</span>
+                    </div>
+                </div>
+
+<!--                <div class="form-group" th:class="${#fields.hasErrors('type')}? 'form-group has-error':'form-group'">
+                    <label class="col-md-3 control-label">Description</label>
+                    <div class="col-md-9">
+                        <select th:field="*{type}" class="form-control">
+                            <option value="">Sélectionner un profil</option>
+                            <option th:each="type : ${T(com.starter.top3.domain.model.security.ProfileType).values()}" th:value="${type}" th:text="#{${'ProfileType.'+type}}"></option>
+                        </select>
+                        <span class="help-block" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Error</span>
+                    </div>
+                </div>-->
+
+
+            </form>
+
+                <h2>Liste des rôles</h2>
+
+                <table  class="display table table-striped table-bordered table-hover" id="table-profile-roles">
+                    <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Nom du rôle
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="role,rowStat : ${roles}" th:object="${profile}">
+                        <td>
+                            <input type="checkbox"
+                                   th:value="${role.id}"
+                                   th:field="*{roles[__${rowStat.index}__].id}"
+                                   th:attr="data-role=${role.id}"
+                                   th:checked="${#lists.contains(profile.roles, role)}
+                                   "/>
+                        </td>
+                        <td th:text="${role.name}">role name</td>
+                        <td th:text="${role.description}">description</td>
+                        <td>
+                            <a class="btn default btn-xs green-stripe action-show-permission" href="#" th:attr="data-role=${role.id}">
+                                <i class="fa fa-dashboard"></i>permissions
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+        </div>
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal" th:text="#{action.close}">Fermer</button>
+    <button type="submit" class="btn blue" id="btn-save-profile">Sauvegarder les changements</button>
+</div>
+
+<script th:inline="javascript">
+    $(function(){
+        new starter.profile.ProfileCreateController({
+            url : [[@{/admin/profile/create}]],
+            findPermissionByRoleIdUrl : [[@{/admin/rest/permission/byRole/}]]
+        });
+    });
+</script>

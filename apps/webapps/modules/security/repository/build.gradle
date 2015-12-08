@@ -1,0 +1,13 @@
+group 'net.dkahn.starter.core.repositories'
+
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile project(':tools:repository')
+    compile project(':apps:webapps:modules:security:domain')
+
+    compile "org.springframework.security:spring-security-core"
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

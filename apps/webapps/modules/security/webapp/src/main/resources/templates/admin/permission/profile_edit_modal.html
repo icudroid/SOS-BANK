@@ -1,0 +1,115 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title" th:text="#{profile.detail.title(${profile.name})}">
+            Edition du profil
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+
+            <p id="profileError" style="display: none;"></p>
+
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" th:text="#{profile.detail.name}">Nom</label>
+                    <div class="col-md-9">
+                        <a href="#" th:text="${profile.name}" id="editName">Profile name</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label" th:text="#{profile.detail.description}">Description</label>
+                    <div class="col-md-9">
+                        <a href="#" th:text="${profile.description}" id="editDescription">Profile name</a>
+                    </div>
+                </div>
+
+<!--
+                <div class="form-group">
+                    <label class="col-md-3 control-label" th:text="#{profile.detail.type}">Type du profile</label>
+                    <div class="col-md-9">
+                        <a href="#" th:text="#{${'ProfileType.'+profile.type}}" id="editType">Profile type</a>
+                    </div>
+                </div>
+-->
+
+                <h2>
+                    <div style="float: left;" th:text="#{profile.detail.roles.title}">
+                        Liste des rôles
+                    </div>
+
+                    <div style="float: right;" sec:authorize="hasRole('ROLE_PROFILE_W')">
+                        <a th:href="@{/admin/profile/addRole}" class="btn btn-default btn-sm btn-add-role">
+                            <i class="fa fa-plus"></i> <span th:text="#{profile.detail.roles.add}">Ajouter un role</span>
+                        </a>
+                    </div>
+
+                </h2>
+
+                <table  class="display table table-striped table-bordered table-hover" id="table-profile-roles">
+                    <thead>
+                    <tr>
+                        <th th:text="#{profile.detail.roles.name}">Nom du rôle</th>
+                        <th th:text="#{profile.detail.roles.description}">Description</th>
+                        <th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="role : ${profile.roles}">
+                        <td th:text="${role.name}">role name</td>
+                        <td th:text="${role.description}">description</td>
+                        <td>
+                            <a class="btn default btn-xs green-stripe action-show-role" href="#" th:attr="data-role=${role.id}">
+                                <i class="fa fa-dashboard"></i>Voir
+                            </a>
+                            <a sec:authorize="hasRole('ROLE_PROFILE_W')" class="btn default btn-xs red-stripe action-delete-role" href="#" th:attr="data-id=${role.id},data-name=${role.name}">
+                                <i class="fa fa-minus"></i>Supprimer
+                            </a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="row" id="show-permissions">
+
+    </div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal" th:text="#{action.close}">Fermer</button>
+    <button type="button" class="btn blue" id="btn-save-profile" sec:authorize="hasRole('ROLE_PROFILE_W')">Sauvegarder les changements</button>
+</div>
+
+
+<script th:inline="javascript">
+    $(function(){
+
+        var authorize = {};
+
+        <th:block  sec:authorize="hasRole('ROLE_PROFILE_W')">authorize.modifiy = true;</th:block>
+
+        var profile =       [[${profile}]];
+
+        /*profile.type = profile.type.$name;*/
+
+
+        new starter.profile.ProfileModal({
+            profile :profile,
+            roles : [[${roles}]],
+            findPermissionByRoleIdUrl : [[@{/admin/rest/permission/byRole/}]],
+            saveProfileUrl : [[@{/admin/rest/profile/save}]],
+            existProfileIdUrl : [[@{/admin/rest/profile/exist/}]],
+            security : {
+                authorize : authorize
+            }
+        });
+    });
+</script>

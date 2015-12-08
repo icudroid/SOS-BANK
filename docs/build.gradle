@@ -1,0 +1,17 @@
+
+task clean(description: 'Deletes the build directory.', group: 'Build') {
+    doFirst {
+        delete 'build'
+        delete file('source/_docs/generated-sources')
+    }
+}
+
+
+task makeHtml(type: Exec, description: 'Builds html documentation.', group: 'Build') {
+    inputs.dir file('source')
+    outputs.dir buildDir
+
+    doFirst {
+        commandLine 'make', 'html', 'SPHINXOPTS=-W' //-W => transforme les WARNS en ERRORS et change le code de retour à 1 si problème
+    }
+}

@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.tools'
+
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile libs.queryDsl
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

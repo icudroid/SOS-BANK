@@ -1,0 +1,12 @@
+group 'net.dkahn.starter.apps.webapps.modules'
+
+apply plugin: 'spring-boot'
+
+
+dependencies {
+    compile project(':apps:webapps:common')
+    compile project(':apps:webapps:modules:security:service')
+    compile project(':tools:common')
+}
+
+bootRepackage.enabled = false

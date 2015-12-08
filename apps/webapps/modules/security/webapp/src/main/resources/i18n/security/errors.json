@@ -1,0 +1,19 @@
+{
+  "required": {
+    "profile": {
+      "name": "Le nom du profil est requis.",
+      "description": "La description du profil est requise.",
+      "type" : "Le type de profil est requis."
+    },
+    "role": {
+      "name": "Le nom du rôle est requis.",
+      "description": "La description du rôle est requise."
+    }
+  },
+  "exist": {
+    "profile": "Le nom du rôle existe déjà.",
+    "merchant": {
+      "reference": "Cette référence marchand existe déjà."
+    }
+  }
+}

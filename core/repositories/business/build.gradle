@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.core.repositories'
+
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile project(':core:domains:business')
+    compile project(':tools:repository')
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

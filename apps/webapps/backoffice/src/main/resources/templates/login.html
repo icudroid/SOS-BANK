@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layouts/login"
+        >
+  <head>
+
+  </head>
+  <body>
+    <div class="container" layout:fragment="content">
+      <form class="login-form" th:action="@{/login}" method="POST">
+
+        <div th:if="${param.logout}" class="alert alert-danger">
+          <button class="close" data-close="alert"></button>
+			<span th:text="#{login.message.logout}">
+			You have been logged out. </span>
+        </div>
+
+        <div th:if="${param.error}" class="alert alert-danger">
+          <button class="close" data-close="alert"></button>
+			<span th:text="#{login.message.error}">
+			There was an error, please try again. </span>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label visible-ie8 visible-ie9">Username</label>
+          <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" th:placeholder="#{login.placeholder.username}" name="username" th:value="${username}"/>
+        </div>
+        <div class="form-group">
+          <label class="control-label visible-ie8 visible-ie9">Password</label>
+          <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" th:placeholder="#{login.placeholder.password}" name="password"/>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-block uppercase" th:text="#{login.login.btn}">Login</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

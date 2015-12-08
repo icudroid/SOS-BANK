@@ -1,0 +1,14 @@
+group 'net.dkahn.starter.core.services'
+
+apply plugin: 'spring-boot'
+
+bootRepackage {
+    enabled = false //we want 'blessed' version numbers, but a not executable jar
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    compile project(':core:repositories:business')
+
+}
+

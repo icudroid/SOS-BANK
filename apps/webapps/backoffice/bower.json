@@ -1,0 +1,10 @@
+{
+  "name": "webapps-backoffice",
+  "private": "true",
+  "authors": [
+    "dimitri@d-kahn.net"
+  ],
+  "devDependencies": {
+    "bootstrap-editable":""
+  }
+}

@@ -1,0 +1,83 @@
+group 'net.dkahn.starter.apps.webapps'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:0.10'
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '0.12.2'
+    npmVersion = '2.7.5'
+    download = true
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity3")
+    compile libs.thymeleafExtra
+
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-web")
+
+    compile("org.springframework.security:spring-security-web")
+    compile("org.springframework.security:spring-security-config")
+
+
+    compile("org.thymeleaf.extras:thymeleaf-extras-conditionalcomments")
+    compile("com.github.mxab.thymeleaf.extras:thymeleaf-extras-data-attribute")
+
+    compile libs.http
+
+    compile libs.lombok
+
+    compile libs.commonsLang
+
+    compile libs.postgres
+
+    compile "ch.qos.logback:logback-classic"
+
+    compile libs.webflow
+
+    compile project(':core:domains:business')
+    compile project(':core:repositories:business')
+    compile project(':core:services:common')
+    compile project(':core:services:security')
+    //compile project(':core:services:mail')
+
+}
+
+
+
+task npmPackages(type: NpmTask) {
+    description = "Install Node.js packages"
+    args = [ 'install' ]
+    inputs.files file('package.json')
+    outputs.files file('node_modules')
+}
+
+task bowerInstall(type: NodeTask) {
+    script = file('node_modules/bower/bin/bower')
+    args = ['install']
+    dependsOn npmPackages
+}
+
+processResources.dependsOn bowerInstall
+
+clean.delete << file('node_modules')
+clean.delete << file('src/main/resources/static/static/assets/global/plugins')
+
+bootRepackage.enabled = false

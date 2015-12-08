@@ -1,0 +1,10 @@
+.logo a{
+    font-size: 32px;
+    font-weight: bold;
+ }
+
+.login-footer {
+    color: #d9ecf9;
+    margin: auto;
+    text-align: center;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        layout:decorator="layouts/bo"
+        >
+<head>
+    <title th:text="#{home.title}">Accueil</title>
+</head>
+
+<th:block layout:fragment="addition-css">
+
+</th:block>
+
+<body th:with="activeMenu=${'home'}">
+
+<div class="container" layout:fragment="content">
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>Welcome</h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+</div>
+
+
+<th:block layout:fragment="addition-js">
+
+</th:block>
+
+<th:block layout:fragment="page-js">
+
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html       xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:th="http://www.thymeleaf.org"
+            xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+            xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+            layout:decorator="layouts/bo"
+>
+<head></head>
+<th:block layout:fragment="addition-css">
+    <link rel="stylesheet" type="text/css" href="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/select2.css"
+          th:href="@{/static/assets/global/plugins/select2/select2.css}"/>
+
+    <link rel="stylesheet" type="text/css" href="../../../static/static/assets/starter/bootstrap/dataTables.bootstrap.css"
+          th:href="@{/static/assets/starter/bootstrap/dataTables.bootstrap.css}"
+            />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css"
+          th:href="@{/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}"
+            />
+
+
+    <link rel="stylesheet" type="text/css" href="/static/static/js/starter/plugin/bootstrap-datatable/dataTables.bootstrap.css"
+          th:href="@{/static/assets/global/plugins/bootstrap-editable/src/css/bootstrap-editable.css}"
+            />
+
+</th:block>
+
+<body th:with="activeMenu=${'profile'}">
+
+
+
+<div layout:fragment="content">
+
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>Gestion des profils</h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+
+
+    <div class="portlet box  blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-cogs"></i>Liste des profils
+            </div>
+            <div class="actions">
+                <a sec:authorize="hasRole('ROLE_PROFILE_W')" class="btn btn-circle red-sunglo btn-sm btn-action" href="#" th:href="@{/admin/profile/create}">
+                    <i class="fa fa-plus"></i> Ajouter un profil
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+                <table  class="display table table-striped table-bordered table-hover" id="profiles-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nom du profil
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Opérations
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="profile : ${profiles}">
+                            <td th:text="${profile.name}">Profile name</td>
+                            <td th:utext="${profile.description}">description</td>
+                            <!--<td th:utext="${profile.type}">type</td>-->
+                            <td>
+                                <a class="btn default btn-xs green-stripe btn-action" href="#" th:href="@{${'/admin/profile/edit/'+profile.id}}">
+                                    <i class="fa fa-dashboard"></i> Editer
+                                </a>
+                                <a sec:authorize="hasRole('ROLE_PROFILE_W')" class="btn default btn-xs red-stripe profile-delete-action" href="#" th:href="@{${'/admin/rest/profile/delete/'+profile.id}}" data-delete="Voulez-vous supprimer le profile ?">
+                                    <i class="fa fa-minus"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+        </div>
+    </div>
+
+
+    <div class="portlet box  blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-cogs"></i>Liste des rôles
+            </div>
+            <div class="actions">
+                <a class="btn btn-circle red-sunglo btn-sm btn-action" href="#" th:href="@{/admin/profile/role/create}" sec:authorize="hasRole('ROLE_ROLE_W')">
+                    <i class="fa fa-plus"></i> Ajouter un rôle
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+                <table  class="display table table-striped table-bordered table-hover" id="roles-table">
+                    <thead>
+                    <tr>
+                        <th>
+                            Nom du rôle
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Opérations
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--@thymesVar id="profile" type="com.starter.top3.domain.model.security.Profile"-->
+                    <tr th:each="role : ${roles}">
+                        <td th:text="${role.name}">Profile name</td>
+                        <td th:utext="${role.description}">description</td>
+                        <td>
+                            <a class="btn default btn-xs green-stripe btn-action" href="#" th:href="@{${'/admin/profile/role/edit/'+role.id}}">
+                                <i class="fa fa-dashboard"></i> Editer
+                            </a>
+                            <a sec:authorize="hasRole('ROLE_ROLE_W')" class="btn default btn-xs red-stripe role-delete-action" href="#" th:href="@{${'/admin/rest/role/delete/'+role.id}}" data-delete="Voulez-vous supprimer le role ?">
+                                <i class="fa fa-minus"></i> Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+        </div>
+    </div>
+
+
+    <div class="portlet box  blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-cogs"></i>Liste des permissions
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <table  class="display table table-striped table-bordered table-hover" id="permissions-table">
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<th:block layout:fragment="addition-js">
+
+    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/select2.min.js"
+            th:src="@{/static/assets/global/plugins/select2/select2.min.js}"></script>
+    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/DataTables/media/js/jquery.dataTables.min.js"
+            th:src="@{/static/assets/global/plugins/DataTables/media/js/jquery.dataTables.js}"
+            ></script>
+
+    <script type="text/javascript" src="../../../static/static/assets/starter/bootstrap/dataTables.bootstrap.js"
+            th:src="@{/static/assets/starter/bootstrap/dataTables.bootstrap.js}"
+            ></script>
+
+    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"
+            th:src="@{/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js}"
+            ></script>
+
+
+    <script type="text/javascript" src="../../../static/static/assets/global/plugins/bootstrap-editable/src/js/bootstrap-editable.js"
+            th:src="@{/static/assets/global/plugins/bootstrap-editable/src/js/bootstrap-editable.js}"
+            ></script>
+
+
+    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/bootbox/bootbox.js"
+            th:src="@{/static/assets/global/plugins/bootbox/bootbox.js}"
+            ></script>
+
+
+
+</th:block>
+
+<th:block layout:fragment="page-js">
+
+    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/js/starter/search-datatable/action-datatable.js"
+            th:src="@{/static/js/starter/search-datatable/action-datatable.js}"></script>
+
+    <script type="text/javascript" src="../../../static/static/js/starter/role/role-edit-modal.js"
+            th:src="@{/static/js/starter/role/role-edit-modal.js}"></script>
+
+    <script type="text/javascript" src="../../../static/static/js/starter/profile/profile-edit-modal.js"
+            th:src="@{/static/js/starter/profile/profile-edit-modal.js}"></script>
+
+    <script type="text/javascript" src="../../../static/static/js/starter/profile/add-role-modal.js"
+            th:src="@{/static/js/starter/profile/add-role-modal.js}"></script>
+
+    <script type="text/javascript" src="../../../static/static/js/starter/profile/profile-create-modal.js"
+            th:src="@{/static/js/starter/profile/profile-create-modal.js}"></script>
+
+    <script type="text/javascript" src="../../../static/static/js/starter/profile/profile-list.js"
+            th:src="@{/static/js/starter/profile/profile-list.js}"></script>
+
+    <script  th:inline="javascript">
+        jQuery(document).ready(function() {
+            new starter.profile.ListController({
+                searchPersissionUrl : /*[[@{/admin/rest/permission/query}]]*/ 'url',
+                roleEditUrl : /*[[@{/admin/profile/role/edit/}]]*/ 'url',
+                roleSearchByNameUrl : /*[[@{/admin/rest/role/searchByName}]]*/ 'url',
+                addRoleToPermission: /*[[@{/admin/rest/role/addPermission}]]*/ 'url'
+            });
+        });
+    </script>
+</th:block>
+
+</body>
+</html>

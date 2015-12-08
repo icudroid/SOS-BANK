@@ -1,0 +1,28 @@
+rootProject.name = 'starter'
+
+include 'tools:common'
+include 'core:domains:business'
+include 'core:repositories:business'
+include 'core:services:common'
+
+include 'apps:distrib'
+include 'apps:webapps:common'
+include 'apps:webapps:modules:security:domain'
+include 'apps:webapps:modules:security:repository'
+include 'apps:webapps:modules:security:service'
+include 'apps:webapps:modules:security:webapp'
+
+include 'apps:webapps:frontend'
+include 'apps:webapps:backoffice'
+
+include 'apps:batches:common'
+
+include 'apps:daemons:common'
+
+include 'docs'
+include 'tools:domain'
+include 'tools:repository'
+include 'core:services:security'
+include 'core:services:mail'
+
+

@@ -1,0 +1,128 @@
+group 'net.dkahn.starter'
+
+ext {
+    springBootVersion = '1.2.5.RELEASE'
+    queryDslVersion = '3.6.3'
+    webflowVersion =     '2.4.0.RELEASE'
+
+    libs = [
+            springBoot: "org.springframework.boot:spring-boot-starter:${springBootVersion}",
+
+            //database
+            postgres: "org.postgresql:postgresql:9.3-1102-jdbc41",
+            queryDslApt: "com.mysema.querydsl:querydsl-apt:${queryDslVersion}",
+            queryDsl: [
+                    dependencies.create("com.mysema.querydsl:querydsl-sql:${queryDslVersion}") {
+                        exclude module: 'joda-time'
+                    },
+                    "com.mysema.querydsl:querydsl-jpa:${queryDslVersion}"
+            ],
+
+            //utilitaires
+            hibernateValidator: [
+                    "org.hibernate:hibernate-validator:5.1.3.Final",
+                    "javax.el:el-api:2.2.1-b04",
+                    "org.glassfish.web:el-impl:2.2.1-b05"
+            ],
+            hibernateCore: "org.hibernate:hibernate-core:4.3.7.Final",
+            lombok: "org.projectlombok:lombok:1.16.2",
+
+            cxf: "org.apache.cxf:cxf:3.0.3",
+            jms: 'org.springframework:spring-jms:4.1.4.RELEASE',
+            mail: [
+                    'org.springframework.integration:spring-integration-mail',
+                    'javax.mail:mail:1.4.7'
+            ],
+            http: [
+                    "org.apache.httpcomponents:httpcore",
+                    "org.apache.httpcomponents:httpclient"
+            ],
+            bouncycastle: "org.bouncycastle:bcprov-jdk16:1.45",
+
+            thymeleafExtra: "org.thymeleaf.extras:thymeleaf-extras-java8time:2.1.0.RELEASE",
+
+            //commons
+            commonsIo: "commons-io:commons-io:2.4",
+            commonsLang: 'org.apache.commons:commons-lang3:3.3.2',
+            commonsValidator: "commons-validator:commons-validator:1.4.1",
+
+            //tests
+            h2: "com.h2database:h2:1.4.182",
+
+
+            webflow : [
+                    "org.springframework.webflow:spring-webflow:${webflowVersion}",
+                    "org.springframework.webflow:spring-js:${webflowVersion}",
+                    "org.springframework.webflow:spring-js-resources:${webflowVersion}"
+            ],
+
+
+            guava :'com.google.guava:guava:18.0'
+    ]
+
+}
+
+allprojects {
+    version = '0.1-SNAPSHOT'
+    apply plugin: 'idea'
+}
+
+configure(subprojects - project(':docs')) {
+//subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+
+    configurations {
+        provided
+    }
+
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+        dependencies {
+            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        }
+    }
+
+    idea {
+        module {
+            scopes.PROVIDED.plus += [configurations.provided]
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    sourceSets {
+        // Include provided for compilation (used for lombok)
+        main {
+            compileClasspath += configurations.provided
+        }
+        generated {
+            java {
+                srcDirs = ['generated-classes']
+            }
+        }
+    }
+
+    dependencies {
+        testCompile("org.springframework.boot:spring-boot-starter-test"){
+            exclude module: "junit"
+        }
+    }
+
+}
+
+//This task print the project version in stdout
+task projectVersion {
+    doLast {
+        println version
+    }
+}
+

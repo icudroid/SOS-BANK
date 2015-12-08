@@ -1,0 +1,22 @@
+group 'net.dkahn.starter.tools'
+
+apply plugin: 'spring-boot'
+
+bootRepackage {
+    enabled = false //we want 'blessed' version numbers, but a not executable jar
+}
+
+dependencies {
+
+    compile("org.springframework.boot:spring-boot-starter")
+
+    compile 'org.springframework:spring-beans'
+    compile 'org.springframework:spring-context'
+
+
+    compile libs.commonsLang
+    compile libs.commonsIo
+
+    provided libs.lombok
+
+}

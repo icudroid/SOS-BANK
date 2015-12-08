@@ -1,0 +1,21 @@
+apply plugin: 'spring-boot'
+
+group 'net.dkahn.starter.apps.webapps'
+dependencies {
+    compile libs.guava
+
+    compile 'org.springframework.boot:spring-boot-starter'
+
+    compile 'org.springframework:spring-context-support'
+    compile 'org.thymeleaf:thymeleaf-spring4'
+
+    compile 'javax.mail:javax.mail-api'
+
+    testCompile 'org.subethamail:subethasmtp-wiser:1.2'
+    testCompile 'org.springframework:spring-test'
+
+    compile "javax.servlet:javax.servlet-api"
+}
+
+startScripts.enabled = false
+bootRepackage.enabled = false

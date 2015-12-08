@@ -1,0 +1,24 @@
+{
+
+  "profile":{
+    "detail": {
+      "title":"Edition du profil : {0}",
+      "name": "Nom",
+      "description": "Description",
+      "type": "Type du profil",
+      "roles": {
+        "title": "Liste des rôles",
+        "add": "Ajouter un rôle",
+        "name": "Nom du rôle",
+        "description": "Description"
+      }
+    }
+  },
+
+  "sidebar":{
+    "manage":{
+      "profile":"Gestion des profils"
+    }
+  }
+
+}

@@ -1,0 +1,42 @@
+#Global server configuration
+#server:
+#    port: 8080
+#    context-path:  # the context path, defaults to '/'
+#    address:  # bind to a specific NIC
+#    session-timeout:  # session timeout in seconds
+#    context-parameters.*:  # Servlet context init parameters, e.g. server.context-parameters.a: alpha
+#    servlet-path:  # the servlet path, defaults to '/'
+#    ssl.enabled: true # if SSL support is enabled
+#    ssl.client-auth:  # want or need
+#    ssl.key-alias:
+#    ssl.ciphers:  # supported SSL ciphers
+#    ssl.key-password:
+#    ssl.key-store:
+#    ssl.key-store-password:
+#    ssl.key-store-provider:
+#    ssl.key-store-type:
+#    ssl.protocol: TLS
+#    ssl.trust-store:
+#    ssl.trust-store-password:
+#    ssl.trust-store-provider:
+#    ssl.trust-store-type:
+#    tomcat.access-log-pattern:  # log pattern of the access log
+#    tomcat.access-log-enabled: false # is access logging enabled
+#    tomcat.compression: off # is compression enabled (off, on, or an integer content length limit)
+#    tomcat.compressableMimeTypes: text/html,text/xml,text/plain # comma-separated list of mime types that Tomcat will compress
+#    tomcat.internal-proxies: 10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|\\
+#     192\\.168\\.\\d{1,3}\\.\\d{1,3}|\\
+#     169\\.254\\.\\d{1,3}\\.\\d{1,3}|\\
+#     127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} # regular expression matching trusted IP addresses
+#    tomcat.protocol-header: x-forwarded-proto # front end proxy forward header
+#    tomcat.port-header:  # front end proxy port header
+#    tomcat.remote-ip-header: x-forwarded-for
+#    tomcat.basedir: /tmp # base dir (usually not needed, defaults to tmp)
+#    tomcat.background-processor-delay: 30; # in seconds
+#    tomcat.max-http-header-size:  # maximum size in bytes of the HTTP message header
+#    tomcat.max-threads :  0 # number of threads in protocol handler
+#    tomcat.uri-encoding :  UTF-8 # character encoding to use for URL decoding
+
+#ajp:
+#  port: #if this variable is defined we activate  tomcat ajp port and we redirect input request to ${server.port}
+#  scheme:  # can be http /https /ajp/ default ajp

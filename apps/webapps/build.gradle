@@ -1,0 +1,58 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+subprojects { subProject ->
+    afterEvaluate {
+        if (subProject.plugins.hasPlugin('war')) {
+            war {
+                manifest {
+                    attributes('Application-Version': project.version)
+                }
+            }
+        }
+
+        if (subProject.plugins.hasPlugin('spring-boot') && subProject.bootRepackage.enabled) {
+            task zip(type: Zip, dependsOn: bootRepackage) {
+                def fileName = "${jar.baseName}-${jar.version}"
+                includeEmptyDirs = true
+
+                from('build/libs') {
+                    include '*.war'
+                    into "${jar.version}/lib"
+                }
+
+                from(project(':apps:distrib').file('src/main/resources/startup-script.sh')) {
+                    into "/${jar.version}/bin"
+                    filter(ReplaceTokens, tokens: [appName: "${subProject.name}".toString(), fileName: "${fileName}.war".toString()])
+                    rename { String file ->
+                        "${subProject.name}.sh".toString()
+                    }
+                    fileMode = 0755
+                }
+
+                from(project(':apps:distrib').file('src/main/resources/logback.xml')) {
+                    into "/${jar.version}/conf"
+                    filter(ReplaceTokens, tokens: [appLogFile: "${subProject.name}.log".toString()])
+                }
+
+                from(project(':apps:distrib').file('src/main/resources/server.yml')) {
+                    into "/${jar.version}/conf"
+                }
+
+                from('src/main/resources/application.yml') {
+                    into "${jar.version}/conf"
+                }
+            }
+
+            task zipStatics(type: Zip, dependsOn: bootRepackage) {
+                archiveName = "${jar.baseName}-statics-${jar.version}.zip"
+                from('src/main/resources/static') {
+                    into 'static'
+                }
+            }
+
+            project(subProject.path).build.dependsOn(zip)
+            project(subProject.path).build.dependsOn(zipStatics)
+
+        }
+    }
+}

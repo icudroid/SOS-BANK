@@ -1,0 +1,134 @@
+.page-logo a{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 22px;
+}
+
+
+
+.italic{
+    font-style: italic;
+}
+
+
+.label-ENABLED{
+    background-color: #45b6af;
+}
+.label-DISABLED{
+    background-color: #f3565d;
+}
+
+.label-ACTIVE{
+    background-color: #45b6af;
+}
+.label-CLOSED{
+    background-color: #f3565d;
+}
+
+.label-IN_PROGRESS_CUSTOMER{
+    background-color: #f4cbee;
+}
+.label-IN_ERROR{
+    background-color: #f3565d;
+}
+.label-IN_PROGRESS_MERCHANT{
+    background-color: #b28ff4;
+}
+.label-IN_PROGRESS_TOP3{
+    background-color: #44dfde;
+}
+.label-DONE{
+    background-color: #2fb63f;
+}
+.label-ABORTED{
+    background-color: #f3ac4d;
+}
+
+
+.btn.opposite-action-ENABLED {
+    border-left: 3px solid #d84a38;
+}
+
+
+.btn.opposite-action-DISABLED {
+    border-left: 3px solid #35aa47;
+}
+
+.btn.opposite-action-true {
+    border-left: 3px solid #d84a38;
+}
+
+.btn.opposite-action-false {
+    border-left: 3px solid #35aa47;
+}
+
+
+
+.font-ENABLED {
+    color: #35aa47 !important;
+}
+
+.font-DISABLED {
+    color: #d84a38 !important;
+}
+
+
+.font-ACTIVE {
+    color: #35aa47 !important;
+}
+
+.font-CLOSED {
+    color: #d84a38 !important;
+}
+
+#transactions-dropdown li a{
+    padding-right: 25px;
+}
+
+code {
+    color: #5b9bd1;
+}
+
+div.tooltip-wrapper {
+    display: inline-block;
+    padding: 0;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+.form-group.required .control-label:after {
+    content: " *";
+}
+p.editable-field {
+    margin-bottom: 0;
+}
+
+td ul {
+    padding-left: 0;
+    list-style-position: inside;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+
+th {
+    text-align: center;
+}
+
+h3, h4 {
+    color: #5B9BD1;
+}
+
+span.subcat {
+    padding-left: 15px;
+}
+
+img.merchant-logo, .merchant-logo img {
+    height: 44px;
+}
+
+.modal-title img.merchant-logo {
+    margin-left: 10px;
+}

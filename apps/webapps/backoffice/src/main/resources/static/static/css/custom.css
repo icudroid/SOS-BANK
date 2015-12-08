@@ -1,0 +1,18 @@
+.page-header.navbar .page-logo .logo-default {
+    margin: 5px 0 0;
+}
+
+.modal {
+    left: 200px;
+}
+.page-sidebar-closed .modal{
+    left: 50px;
+}
+
+.page-sidebar, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover {
+    z-index: 10000;
+}
+
+.modal-backdrop, .modal-backdrop.fade.in {
+    z-index: 9999;
+}

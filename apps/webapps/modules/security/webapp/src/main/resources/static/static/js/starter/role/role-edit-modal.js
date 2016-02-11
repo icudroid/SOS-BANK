@@ -23,6 +23,7 @@ starter.role.RoleModal.prototype = {
         if(options.security.authorize.modifiy){
             if(options.roleId != null){
                 $('#rName').editable({
+                    mode: 'inline',
                     type: 'text',
                     title: 'Entrer le nouveau nom du role',
                     success: function(response, newValue) {
@@ -52,6 +53,7 @@ starter.role.RoleModal.prototype = {
                 });
 
                 $('#rDescription').editable({
+                    mode: 'inline',
                     type: 'textarea',
                     title: 'Entrer la description du role',
                     success: function(response, newValue) {

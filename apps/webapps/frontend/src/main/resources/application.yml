@@ -1,3 +1,5 @@
+server:
+  port: 8180
 spring:
     jpa:
         open_in_view: true

@@ -23,6 +23,7 @@ starter.profile.ProfileModal.prototype = {
 
         if(options.security.authorize.modifiy){
             $('#editName').editable({
+                mode: 'inline',
                 type: 'text',
                 placement: 'bottom',
                 title: 'Entrer le nouveau nom du profil',
@@ -53,6 +54,7 @@ starter.profile.ProfileModal.prototype = {
             });
 
             $('#editDescription').editable({
+                mode: 'inline',
                 type: 'textarea',
                 title: 'Entrer la description du profil',
                 success: function(response, newValue) {

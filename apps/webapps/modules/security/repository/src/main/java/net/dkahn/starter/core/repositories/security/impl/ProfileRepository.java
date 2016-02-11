@@ -36,6 +36,22 @@ public class ProfileRepository extends GenericRepositoryJpa<Profile,Integer> imp
         return  getAuthorities(query.list(permission));
     }
 
+
+    @Override
+    public  List<GrantedAuthority> loadGrantedAnonymousAuthorities(){
+        JPAQuery query = new JPAQuery(getEntityManager());
+
+        QProfile profile = QProfile.profile;
+        QRole role = QRole.role;
+        QPermission permission = QPermission.permission;
+
+        query.from(profile) .join(profile.roles, role)
+                .join(role.permissions,permission)
+                .where(profile.name.eq(IProfileRepository.ANONYMOUS));
+
+        return  getAuthorities(query.list(permission));
+    }
+
     private List<GrantedAuthority> getAuthorities(List<Permission> list) {
         List<GrantedAuthority> permissionsResult = new ArrayList<>();
 

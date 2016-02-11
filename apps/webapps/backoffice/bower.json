@@ -5,6 +5,6 @@
     "dimitri@d-kahn.net"
   ],
   "devDependencies": {
-    "bootstrap-editable":""
+    "x-editable":""
   }
 }

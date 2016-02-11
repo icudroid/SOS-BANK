@@ -10,6 +10,14 @@ public interface IMetaDataController {
             interface Home {
                 String PATH = "home";
                 String VIEW = "home";
+
+
+                String PATH_A = "/a";
+                String VIEW_A = "a";
+
+                String PATH_B = "/b";
+                String VIEW_B = "b";
+
             }
 
             interface Root {

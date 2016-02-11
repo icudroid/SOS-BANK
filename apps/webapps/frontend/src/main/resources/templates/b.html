@@ -3,7 +3,7 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorator="layouts/notLoggued"
+        layout:decorator="layouts/loggued"
         >
 <head>
 
@@ -12,16 +12,7 @@
 
 
 <div layout:fragment="content">
-        contenu non loggué
-
-        <a sec:authorize="hasRole('ROLE_A')" th:href="@{/a}">
-                A
-        </a>
-
-        <a sec:authorize="hasRole('ROLE_B')" th:href="@{/b}">
-                B
-        </a>
-
+    B
 </div>
 
 </body>

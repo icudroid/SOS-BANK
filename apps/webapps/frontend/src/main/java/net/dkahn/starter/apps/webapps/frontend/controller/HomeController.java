@@ -24,4 +24,19 @@ public class HomeController {
         return Home.VIEW;
     }
 
+
+
+    @Secured("ROLE_A")
+    @RequestMapping(Home.PATH_A)
+    public String homeA(){
+        return Home.VIEW_A;
+    }
+
+
+    @Secured("ROLE_B")
+    @RequestMapping(Home.PATH_B)
+    public String homeB(){
+        return Home.VIEW_B;
+    }
+
 }

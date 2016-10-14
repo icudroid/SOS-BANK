@@ -1,10 +1,10 @@
 package net.dkahn.starter.tools.repository.jpa;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.dsl.PathBuilder;
 import net.dkahn.starter.tools.repository.IGenericRepository;
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
@@ -174,10 +174,10 @@ public class GenericRepositoryJpa<T, PK extends Serializable> implements IGeneri
 
 
         JPAQuery query = createQuery();
-        query.from(path);
-
-        query.where(builder.get("id").in(ids));
-        return query.list(path);
+        query.select(path)
+                .from(path)
+                .where(builder.get("id").in(ids));
+        return query.fetch();
     }
 
     @Override
@@ -196,7 +196,7 @@ public class GenericRepositoryJpa<T, PK extends Serializable> implements IGeneri
         PathBuilder<T> builder = new PathBuilder<T>(path.getType(), path.getMetadata());
 
         query.from(builder);
-        return query.count();
+        return query.fetchCount();
     }
 
 }

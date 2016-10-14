@@ -5,7 +5,7 @@ import net.dkahn.starter.domains.security.QProfile;
 import net.dkahn.starter.domains.security.QUser;
 import net.dkahn.starter.domains.security.User;
 import net.dkahn.starter.tools.repository.jpa.GenericRepositoryJpa;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,9 +26,9 @@ public class UserRepository extends GenericRepositoryJpa<User,Long> implements I
 
         QUser user = QUser.user;
 
-        query.from(user).where(user.login.eq(username).and(user.enabled.eq(true)));
+        query.select(user).from(user).where(user.login.eq(username).and(user.enabled.eq(true)));
 
-        return query.uniqueResult(user);
+        return (User) query.fetchOne();
     }
 
     @Override
@@ -38,9 +38,9 @@ public class UserRepository extends GenericRepositoryJpa<User,Long> implements I
         QUser user = QUser.user;
         QProfile profile = QProfile.profile;
 
-        query.from(user).join(user.profiles,profile).where(profile.id.eq(idProfile));
+        query.select(user).from(user).join(user.profiles,profile).where(profile.id.eq(idProfile));
 
-        return query.list(user);
+        return query.fetch();
 
     }
 
@@ -50,9 +50,9 @@ public class UserRepository extends GenericRepositoryJpa<User,Long> implements I
 
         QUser user = QUser.user;
 
-        query.from(user).where(user.login.eq(username));
+        query.select(user).from(user).where(user.login.eq(username));
 
-        return query.uniqueResult(user);
+        return (User) query.fetchOne();
     }
 
 

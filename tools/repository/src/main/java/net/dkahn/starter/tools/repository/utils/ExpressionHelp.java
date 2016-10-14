@@ -1,6 +1,7 @@
 package net.dkahn.starter.tools.repository.utils;
 
-import com.mysema.query.types.expr.BooleanExpression;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
  * User: dimitri

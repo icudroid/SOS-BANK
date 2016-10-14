@@ -1,6 +1,6 @@
 package net.dkahn.starter.tools.repository;
 
-import com.mysema.query.jpa.JPQLQuery;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 

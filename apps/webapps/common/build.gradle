@@ -26,7 +26,7 @@ configurations {
 dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity3")
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
     compile libs.thymeleafExtra
 
     compile("org.springframework.boot:spring-boot-starter-actuator")

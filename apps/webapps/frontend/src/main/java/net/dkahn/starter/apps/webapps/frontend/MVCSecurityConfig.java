@@ -107,7 +107,7 @@ public class MVCSecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-                if (applyAnonymousForThisRequest((HttpServletRequest) req)) {
+                //if (applyAnonymousForThisRequest((HttpServletRequest) req)) {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         addAttributesToSession((HttpServletRequest)req);
                         List<GrantedAuthority> grantedAuthorities = profileRepository.loadGrantedAnonymousAuthorities();
@@ -126,7 +126,7 @@ public class MVCSecurityConfig extends WebSecurityConfigurerAdapter {
                                     + SecurityContextHolder.getContext().getAuthentication() + "'");
                         }
                     }
-                }
+                //}
 
                 chain.doFilter(req, res);
             }

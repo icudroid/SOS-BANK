@@ -7,5 +7,5 @@ dependencies {
     compile libs.queryDsl
 }
 
-startScripts.enabled = false
+
 bootRepackage.enabled = false

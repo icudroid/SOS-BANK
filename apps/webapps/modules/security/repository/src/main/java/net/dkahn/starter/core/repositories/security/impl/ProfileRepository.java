@@ -1,10 +1,10 @@
 package net.dkahn.starter.core.repositories.security.impl;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import net.dkahn.starter.core.repositories.security.IProfileRepository;
 import net.dkahn.starter.domains.security.*;
 import net.dkahn.starter.tools.repository.jpa.GenericRepositoryJpa;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
@@ -29,11 +29,11 @@ public class ProfileRepository extends GenericRepositoryJpa<Profile,Integer> imp
         QRole role = QRole.role;
         QPermission permission = QPermission.permission;
 
-        query.from(profile) .join(profile.roles, role)
+        query.select(permission).from(profile) .join(profile.roles, role)
                             .join(role.permissions,permission)
                 .where(profile.in(user.getProfiles()));
 
-        return  getAuthorities(query.list(permission));
+        return  getAuthorities(query.fetch());
     }
 
 
@@ -45,11 +45,11 @@ public class ProfileRepository extends GenericRepositoryJpa<Profile,Integer> imp
         QRole role = QRole.role;
         QPermission permission = QPermission.permission;
 
-        query.from(profile) .join(profile.roles, role)
+        query.select(permission).from(profile) .join(profile.roles, role)
                 .join(role.permissions,permission)
                 .where(profile.name.eq(IProfileRepository.ANONYMOUS));
 
-        return  getAuthorities(query.list(permission));
+        return  getAuthorities(query.fetch());
     }
 
     private List<GrantedAuthority> getAuthorities(List<Permission> list) {
@@ -69,7 +69,7 @@ public class ProfileRepository extends GenericRepositoryJpa<Profile,Integer> imp
 
     @Override
     public Boolean existsByName(Integer id,String newName) {
-        JPAQuery query = new JPAQuery(getEntityManager());
+        JPAQuery<Profile> query = new JPAQuery(getEntityManager());
 
         QProfile profile = QProfile.profile;
 
@@ -81,28 +81,28 @@ public class ProfileRepository extends GenericRepositoryJpa<Profile,Integer> imp
 
         query.from(profile).where(exp);
 
-        return query.exists();
+        return query.fetchCount() >=1  ;
 
     }
 
     @Override
     public List<Profile> findByIds(List<Integer> profileIds) {
 
-        JPAQuery query = createQuery();
+        JPAQuery<Profile> query = createQuery();
 
         QProfile profile = QProfile.profile;
 
-        query.from(profile).where(profile.id.in(profileIds));
+        query.select(profile).from(profile).where(profile.id.in(profileIds));
 
-        return query.list(profile);
+        return query.fetch();
     }
 
     @Override
     public Profile findByName(String profileName) {
-        JPAQuery query = createQuery();
+        JPAQuery<Profile> query = createQuery();
         QProfile profile = QProfile.profile;
-        query.from(profile).where(profile.name.in(profileName));
-        return query.uniqueResult(profile);
+        query.select(profile).from(profile).where(profile.name.in(profileName));
+        return  query.fetchOne();
     }
 
 

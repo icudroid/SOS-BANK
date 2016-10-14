@@ -9,5 +9,5 @@ dependencies {
     compile "org.springframework.security:spring-security-core"
 }
 
-startScripts.enabled = false
+
 bootRepackage.enabled = false

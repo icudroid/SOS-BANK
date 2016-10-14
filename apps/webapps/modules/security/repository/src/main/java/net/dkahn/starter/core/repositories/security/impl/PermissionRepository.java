@@ -1,5 +1,7 @@
 package net.dkahn.starter.core.repositories.security.impl;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
 import net.dkahn.starter.core.repositories.security.IPermissionRepository;
 import net.dkahn.starter.core.repositories.security.filtering.PermissionFilter;
 import net.dkahn.starter.domains.security.Permission;
@@ -7,9 +9,7 @@ import net.dkahn.starter.domains.security.QPermission;
 import net.dkahn.starter.domains.security.QRole;
 import net.dkahn.starter.tools.repository.jpa.GenericRepositoryJpa;
 import net.dkahn.starter.tools.repository.utils.ExpressionHelp;
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,12 +39,12 @@ public class PermissionRepository extends GenericRepositoryJpa<Permission,Intege
         QRole role = QRole.role;
         QPermission permission = QPermission.permission;
 
-        query.from(role)
+        query.select(permission.name, permission).from(role)
                 .join(role.permissions,permission)
                 .groupBy(permission,permission.name)
                 .where(role.id.eq(roleId));
 
-        return createMapPermissions(query.list(permission.name, permission));
+        return createMapPermissions(query.fetch());
     }
 
     @Override
@@ -53,10 +53,10 @@ public class PermissionRepository extends GenericRepositoryJpa<Permission,Intege
 
         QPermission permission = QPermission.permission;
 
-        query.from(permission)
+        query.select(permission.name, permission).from(permission)
                 .groupBy(permission, permission.name);
 
-        return createMapPermissions(query.list(permission.name, permission));
+        return createMapPermissions(query.fetch());
     }
 
 
@@ -92,12 +92,12 @@ public class PermissionRepository extends GenericRepositoryJpa<Permission,Intege
         if (filter.getAttachedRole()!=null) {
             if (filter.getAttachedRole()) {
                expressionHelp.andExp(
-                        new JPASubQuery().from(role).where(role.permissions.contains(permission)).exists()
+                       JPAExpressions.selectFrom(role).where(role.permissions.contains(permission)).exists()
                 );
 
             } else {
                 expressionHelp.andExp(
-                        new JPASubQuery().from(role).where(role.permissions.contains(permission)).exists().not()
+                        JPAExpressions.selectFrom(role).where(role.permissions.contains(permission)).exists().not()
                 );
             }
         }
@@ -125,12 +125,12 @@ public class PermissionRepository extends GenericRepositoryJpa<Permission,Intege
         }
 
 
-        long count = query.count();
+        long count = query.fetchCount();
 
 
         applyPagination(pageable, query);
 
-        List<Permission> list = query.list(permission);
+        List<Permission> list = query.select(permission).fetch();
 
         return new PageImpl<>(list,pageable,count);
 

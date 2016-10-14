@@ -1,21 +1,21 @@
 group 'net.dkahn.starter'
 
 ext {
-    springBootVersion = '1.2.5.RELEASE'
-    queryDslVersion = '3.6.3'
-    webflowVersion =     '2.4.0.RELEASE'
+    springBootVersion = '1.4.1.RELEASE'
+    queryDslVersion = '4.1.3'
+    webflowVersion =     '2.4.4.RELEASE'
 
     libs = [
             springBoot: "org.springframework.boot:spring-boot-starter:${springBootVersion}",
 
             //database
             postgres: "org.postgresql:postgresql:9.3-1102-jdbc41",
-            queryDslApt: "com.mysema.querydsl:querydsl-apt:${queryDslVersion}",
+            queryDslApt: "com.querydsl:querydsl-apt:${queryDslVersion}",
             queryDsl: [
-                    dependencies.create("com.mysema.querydsl:querydsl-sql:${queryDslVersion}") {
+                    dependencies.create("com.querydsl:querydsl-sql:${queryDslVersion}") {
                         exclude module: 'joda-time'
                     },
-                    "com.mysema.querydsl:querydsl-jpa:${queryDslVersion}"
+                    "com.querydsl:querydsl-jpa:${queryDslVersion}"
             ],
 
             //utilitaires

@@ -42,7 +42,7 @@ var STARTER = function() {
                 data : JSON.stringify(data),
                 dataType: "json",
                 success  : function(xhr, ajaxOptions, thrownError) {
-                    Metronic.unblockUI();
+                    App.unblockUI();
                     success(xhr, ajaxOptions, thrownError)
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -142,7 +142,7 @@ var STARTER = function() {
         },
 
         binaryAjaxDl : function(url,data){
-            Metronic.blockUI({animate: true});
+            App.blockUI({animate: true});
             $.ajax({
                 dataType: 'binary',
                 processData: false,
@@ -160,7 +160,7 @@ var STARTER = function() {
                         if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
                     }
 
-                    Metronic.unblockUI();
+                    App.unblockUI();
 
                     var url = URL.createObjectURL(result);
                     var $a = $('<a />', {

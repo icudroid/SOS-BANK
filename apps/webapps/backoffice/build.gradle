@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath 'com.moowork.gradle:gradle-node-plugin:0.10'
+        classpath 'com.moowork.gradle:gradle-node-plugin:0.12'
     }
 }
 
@@ -15,8 +15,8 @@ apply plugin: 'war'
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '0.12.2'
-    npmVersion = '2.7.5'
+    version = '4.6.0'
+    npmVersion = '3.10.8'
     download = true
 }
 

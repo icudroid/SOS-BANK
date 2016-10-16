@@ -5,12 +5,11 @@
     "dimitri@d-kahn.net"
   ],
   "devDependencies": {
-    "jquery-easing-original":"1.3.2",
-    "jquery-parallax":"1.1.3",
-    "owl.carousel":"2.0.0-beta.3"
+    "jquery-easing-original":"latest",
+    "jquery-parallax":"latest",
+    "owl.carousel":"latest"
   },
-  "resolutions": {
-    "jquery": "2.1.4",
+ "resolutions": {
     "jquery.scrollTo":"2.1.2"
-  }
+ }
 }

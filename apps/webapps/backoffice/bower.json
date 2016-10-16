@@ -5,6 +5,6 @@
     "dimitri@d-kahn.net"
   ],
   "devDependencies": {
-    "x-editable":""
+    "x-editable":"latest"
   }
 }

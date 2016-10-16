@@ -1,14 +1,14 @@
 <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu page-sidebar-menu-compact" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"
-    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-    <li th:class="${activeMenu == 'home'} ?'active open':''">
+    <li class="nav-item start" th:classappend="${activeMenu == 'home'} ?'active open':''">
         <a href="index.html" th:href="@{/}">
             <i class="icon-home"></i>
             <span class="title" th:text="#{sidebar.home}">Accueil</span>
         </a>
     </li>
 
-    <li th:class="${activeMenu == 'profile'} ?'active open':''">
+    <li class="nav-item start" th:classappend="${activeMenu == 'profile'} ?'active open':''">
         <a href="index.html" th:href="@{/admin/profile}" sec:authorize="hasRole('ROLE_MAIN_MENU_PROFILE')">
             <i class="fa fa-users"></i>
             <span class="title" th:text="#{sidebar.manage.profile}">Gestion des profiles</span>

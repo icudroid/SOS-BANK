@@ -573,7 +573,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                         $.each(ajaxParams, function(key, value) {
                             data[key] = value;
                         });
-                        Metronic.blockUI({
+                        App.blockUI({
                             message: tableOptions.loadingMessage,
                             target: tableContainer,
                             overlayColor: 'none',
@@ -583,7 +583,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                     },
                     "dataSrc": function(res) { // Manipulate the data returned from the server
                         if (res.customActionMessage) {
-                            Metronic.alert({
+                            App.alert({
                                 type: (res.customActionStatus == 'OK' ? 'success' : 'danger'),
                                 icon: (res.customActionStatus == 'OK' ? 'check' : 'warning'),
                                 message: res.customActionMessage,
@@ -607,7 +607,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                             tableOptions.onSuccess.call(undefined, the);
                         }
 
-                        Metronic.unblockUI(tableContainer);
+                        App.unblockUI(tableContainer);
 
                         return res.data;
                     },
@@ -616,7 +616,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                             tableOptions.onError.call(undefined, the);
                         }
 
-                        Metronic.alert({
+                        App.alert({
                             type: 'danger',
                             icon: 'warning',
                             message: tableOptions.dataTable.language.metronicAjaxRequestGeneralError,
@@ -624,7 +624,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                             place: 'prepend'
                         });
 
-                        Metronic.unblockUI(tableContainer);
+                        App.unblockUI(tableContainer);
                     }
                 },
 
@@ -633,7 +633,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                         tableInitialized = true; // set table initialized
                         table.show(); // display table
                     }
-                    Metronic.initUniform($('input[type="checkbox"]', table)); // reinitialize uniform checkboxes on each table reload
+                    //App.initUniform($('input[type="checkbox"]', table)); // reinitialize uniform checkboxes on each table reload
                     countSelectedRecords(); // reset selected records indicator
 
                     // callback for ajax data load
@@ -772,7 +772,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                 options.actionnable.doAction(data);
 
             } else if (action.val() == "") {
-                Metronic.alert({
+                App.alert({
                     type: 'danger',
                     icon: 'warning',
                     message: options.actionnable.noActionSelected,
@@ -780,7 +780,7 @@ starter.utils.datatable.ActionDatatable = function(options) {
                     place: 'prepend'
                 });
             } else if (the.getSelectedRowsCount() === 0) {
-                Metronic.alert({
+                App.alert({
                     type: 'danger',
                     icon: 'warning',
                     message: options.actionnable.noRowSelected,

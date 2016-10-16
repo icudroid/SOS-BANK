@@ -9,7 +9,7 @@ ext {
             springBoot: "org.springframework.boot:spring-boot-starter:${springBootVersion}",
 
             //database
-            postgres: "org.postgresql:postgresql:9.3-1102-jdbc41",
+            postgres: "org.postgresql:postgresql",
             queryDslApt: "com.querydsl:querydsl-apt:${queryDslVersion}",
             queryDsl: [
                     dependencies.create("com.querydsl:querydsl-sql:${queryDslVersion}") {
@@ -25,7 +25,7 @@ ext {
                     "org.glassfish.web:el-impl:2.2.1-b05"
             ],
             hibernateCore: "org.hibernate:hibernate-core:4.3.7.Final",
-            lombok: "org.projectlombok:lombok:1.16.2",
+            lombok: "org.projectlombok:lombok",
 
             cxf: "org.apache.cxf:cxf:3.0.3",
             jms: 'org.springframework:spring-jms:4.1.4.RELEASE',
@@ -64,14 +64,16 @@ ext {
 
 allprojects {
     version = '0.1-SNAPSHOT'
-    apply plugin: 'idea'
 }
 
 configure(subprojects - project(':docs')) {
 //subprojects {
     apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse-wtp'
 
     sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     configurations {
         provided
@@ -112,6 +114,7 @@ configure(subprojects - project(':docs')) {
     }
 
     dependencies {
+        compile('org.springframework.boot:spring-boot-devtools')
         testCompile("org.springframework.boot:spring-boot-starter-test"){
             exclude module: "junit"
         }

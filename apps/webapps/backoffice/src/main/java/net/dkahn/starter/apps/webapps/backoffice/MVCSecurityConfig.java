@@ -13,9 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
+import javax.sql.DataSource;
 
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE - 8)
@@ -23,10 +27,22 @@ public class MVCSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService authenticationUserService;
 
+    @Resource
+    private DataSource dataSource;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new StandardPasswordEncoder();
     }
+
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+        return db;
+    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -65,11 +81,29 @@ public class MVCSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                             .maximumSessions(1)
                             .expiredUrl("/login?expired");
+
+
+        http.rememberMe()
+                .userDetailsService(authenticationUserService)
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(1209600);
     }
 
     @Bean
     public Filter storeIpFilter() {
         return new StoreIpFilter();
+    }
+
+
+
+    @Bean
+    public SavedRequestAwareAuthenticationSuccessHandler
+    savedRequestAwareAuthenticationSuccessHandler() {
+
+        SavedRequestAwareAuthenticationSuccessHandler auth
+                = new SavedRequestAwareAuthenticationSuccessHandler();
+        auth.setTargetUrlParameter("targetUrl");
+        return auth;
     }
 
 }

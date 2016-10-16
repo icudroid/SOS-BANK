@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html       xmlns="http://www.w3.org/1999/xhtml"
             xmlns:th="http://www.thymeleaf.org"
-            xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+            xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
             xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
             layout:decorator="layouts/bo"
 >
 <head></head>
 <th:block layout:fragment="addition-css">
-    <link rel="stylesheet" type="text/css" href="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/select2.css"
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/dist/css/select2.css"
           th:href="@{/static/assets/global/plugins/select2/select2.css}"/>
 
-    <link rel="stylesheet" type="text/css" href="../../../static/static/assets/starter/bootstrap/dataTables.bootstrap.css"
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../backoffice/src/main/resources/static/static/assets/starter/bootstrap/dataTables.bootstrap.css"
           th:href="@{/static/assets/starter/bootstrap/dataTables.bootstrap.css}"
             />
 
-    <link rel="stylesheet" type="text/css" href="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css"
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../common/src/main/resources/static/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css"
           th:href="@{/static/assets/global/plugins/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}"
             />
 
@@ -31,12 +31,8 @@
 
 <div layout:fragment="content">
 
-    <div class="page-head">
-        <!-- BEGIN PAGE TITLE -->
-        <div class="page-title">
-            <h1>Gestion des profils</h1>
-        </div>
-        <!-- END PAGE TITLE -->
+    <div class="page-title">
+        <h1>Gestion des profils</h1>
     </div>
 
 
@@ -154,8 +150,8 @@
 
 <th:block layout:fragment="addition-js">
 
-    <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/select2.min.js"
-            th:src="@{/static/assets/global/plugins/select2/select2.min.js}"></script>
+    <script type="text/javascript" src="../../../../../../../../../common/src/main/resources/static/static/assets/global/plugins/select2/dist/js/select2.min.js"
+            th:src="@{/static/assets/global/plugins/select2/dist/js/select2.min.js}"></script>
     <script type="text/javascript" src="../../../../../../../common/src/main/resources/static/static/assets/global/plugins/DataTables/media/js/jquery.dataTables.min.js"
             th:src="@{/static/assets/global/plugins/DataTables/media/js/jquery.dataTables.js}"
             ></script>

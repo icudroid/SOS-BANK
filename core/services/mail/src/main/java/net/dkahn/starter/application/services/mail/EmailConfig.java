@@ -18,7 +18,7 @@ import java.util.Properties;
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-@ComponentScan("fr.k2i.adbeback.application.services.mail")
+@ComponentScan("net.dkahn.starter.application.services.mail")
 //@PropertySource(value = {"classpath:mail.properties"})
 public class EmailConfig {
 

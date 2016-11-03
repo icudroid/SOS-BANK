@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.Convert;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EntityListeners(DateUpdaterListener.class)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
 
 
     @Convert(converter = LocalDateTimePersistenceConverter.class)

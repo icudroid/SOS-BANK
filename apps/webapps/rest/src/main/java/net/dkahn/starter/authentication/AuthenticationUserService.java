@@ -35,7 +35,7 @@ public class AuthenticationUserService extends GenericRepositoryJpa<User, Long> 
         if(user==null){
             throw new UsernameNotFoundException("User not found : "+username);
         }else {
-            if(!user.getProfiles().contains(profileRepository.findByName(IProfileRepository.ADMIN_PROFILE))){
+            if(!user.getProfiles().contains(profileRepository.findByName(IProfileRepository.CUSTOMER_PROFILE))){
                 throw new UsernameNotFoundException("user '" + username + "' not found...");
             }
         }

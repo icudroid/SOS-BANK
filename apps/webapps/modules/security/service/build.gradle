@@ -9,8 +9,13 @@ bootRepackage {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
 
+
+    compile project(':tools:common')
+    compile project(':tools:service')
     compile("org.springframework.security:spring-security-core")
     compile project(':apps:webapps:modules:security:domain')
     compile project(':apps:webapps:modules:security:repository')
+
+
 }
 

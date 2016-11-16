@@ -24,3 +24,9 @@ spring:
         poolPreparedStatements: true
         defaultAutoCommit: true
         validationQuery: SELECT 1
+
+
+
+pinpad:
+  path:
+    base: /home/dev/image/mire/

@@ -17,6 +17,7 @@ public interface IProfileRepository extends IGenericRepository<Profile,Integer> 
 
     String ADMIN_PROFILE    = "PROFILE_ADMIN";
     String FRONT_PROFILE    = "PROFILE_FRONT";
+    String CUSTOMER_PROFILE    = "PROFILE_CUSTOMER";
     String ANONYMOUS        = "PROFILE_ANONYMOUS";
 
 

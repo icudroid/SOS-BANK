@@ -16,8 +16,12 @@
 
 package net.dkahn.starter.config;
 
+import net.dkahn.starter.authentication.provider.PinpadAuthenticationProvider;
+import net.dkahn.starter.authentication.provider.UsernamePinpadPasswordAuthenticationFilter;
+import net.dkahn.starter.services.security.IPinpadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +31,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import javax.annotation.Resource;
@@ -44,6 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService authenticationUserService;
 
 	@Resource
+	private IPinpadService pinpadService;
+
+	@Resource
 	private DataSource dataSource;
 
 	@Bean
@@ -51,11 +60,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new StandardPasswordEncoder();
 	}
 
+
+	@Bean(name = "authenticationFilter")
+	public UsernamePinpadPasswordAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager){
+		UsernamePinpadPasswordAuthenticationFilter filter = new UsernamePinpadPasswordAuthenticationFilter();
+		filter.setAuthenticationManager(authenticationManager);
+		return filter;
+	}
+
+
+
+
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		PinpadAuthenticationProvider authenticationProvider = new PinpadAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		authenticationProvider.setUserDetailsService(authenticationUserService);
+		authenticationProvider.setPinpadService(pinpadService);
 		auth.authenticationProvider(authenticationProvider);
 	}
 
@@ -63,14 +85,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+			.csrf().disable()
 			.authorizeRequests()
+				.antMatchers("/login").permitAll()
+				.antMatchers("/pinpad").permitAll()
+				.antMatchers("/pinpad/*/img").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.requestCache()
 					.requestCache(new NullRequestCache())
 			.and()
 				.httpBasic()
-		;
+			;
 	}
 
 

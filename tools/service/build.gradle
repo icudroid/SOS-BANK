@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.tools'
+
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile project(':tools:repository')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+bootRepackage.enabled = false

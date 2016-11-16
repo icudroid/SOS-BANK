@@ -24,6 +24,6 @@ include 'tools:domain'
 include 'tools:repository'
 include 'core:services:security'
 include 'core:services:mail'
-include 'apps:webapps:rest-api'
-findProject(':apps:webapps:rest-api')?.name = 'rest-api'
+include 'apps:webapps:rest'
+include 'tools:service'
 

@@ -1,6 +1,7 @@
 package net.dkahn.starter.authentication.provider;
 
 import net.dkahn.starter.services.security.IPinpadService;
+import net.dkahn.starter.services.security.impl.PinpadExpiredException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -77,20 +78,25 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
         try {
             String presentedPassword = pindpadService.decodePassword(credentials.getPindpadId(), credentials.getPassword());
 
+            pindpadService.remove(credentials.getPindpadId());
 
             if (!passwordEncoder.isPasswordValid(userDetails.getPassword(),
                     presentedPassword, salt)) {
                 logger.debug("Authentication failed: password does not match stored value");
 
-                pindpadService.remove(credentials.getPindpadId());
+                //todo : ajout un authente KO
 
                 throw new BadCredentialsException(messages.getMessage(
                         "AbstractUserDetailsAuthenticationProvider.badCredentials",
                         "Bad credentials"));
             }
 
+            //todo : ajout un authente OK
+
         } catch (JpaObjectRetrievalFailureException pinpadNotFound){
                 throw new BadCredentialsException("Pindpad not found");
+        } catch (PinpadExpiredException e) {
+            throw new BadCredentialsException("Pindpad expired");
         }
 
     }
@@ -117,6 +123,8 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
                     pindpadService.remove(credentials.getPindpadId());
                 } catch (JpaObjectRetrievalFailureException pinpadNotFound){
                     throw new BadCredentialsException("Pindpad not found");
+                } catch (PinpadExpiredException e) {
+                    throw new BadCredentialsException("Pindpad expired");
                 }
             }
             throw notFound;

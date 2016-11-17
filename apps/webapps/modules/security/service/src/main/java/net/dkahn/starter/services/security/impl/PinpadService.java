@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
 
     @Value("${pinpad.path.base}")
     private String base;
+
+    @Value("${pinpad.duration:120}")
+    private Integer pinpadLive;
 
     @Log
     private Logger log;
@@ -63,9 +67,11 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
 
     @Override
     @Transactional
-    public String decodePassword(String id, String encodePassword) {
+    public String decodePassword(String id, String encodePassword) throws PinpadExpiredException{
 
         Pinpad pinpad = repository.get(id);
+
+        isValid(pinpad);
 
         StringBuilder decoded = new StringBuilder();
 
@@ -78,6 +84,14 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
         log.trace("decode le mot de passe : {} => {}",encodePassword, decodePassword);
 
         return decodePassword;
+    }
+
+    private boolean isValid(Pinpad pinpad) throws PinpadExpiredException {
+        LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadLive);
+        if(expiration.isAfter(LocalDateTime.now()))
+            throw new PinpadExpiredException();
+
+        return true;
     }
 
 
@@ -104,12 +118,13 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
 
     @Override
     @Transactional
-    public byte[] generateImage(String id) throws IOException {
+    public byte[] generateImage(String id) throws IOException, PinpadExpiredException {
+
+        Pinpad pinpad = repository.get(id);
+        isValid(pinpad);
 
         BufferedImage img = new BufferedImage(IMG_WIDTH, IMG_HEIGHT_GLOBAL,BufferedImage.TYPE_INT_RGB);
         Graphics g = img.createGraphics();
-        Pinpad pinpad = repository.get(id);
-
 
         int offset = 0;
         for (int i = 0; i < pinpad.getCorrespondance().size(); i++) {

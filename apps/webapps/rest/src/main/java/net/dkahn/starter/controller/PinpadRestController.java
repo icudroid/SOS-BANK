@@ -3,6 +3,7 @@ package net.dkahn.starter.controller;
 import net.dkahn.starter.domains.security.Pinpad;
 import net.dkahn.starter.dto.PinpadDTO;
 import net.dkahn.starter.services.security.IPinpadService;
+import net.dkahn.starter.services.security.impl.PinpadExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class PinpadRestController {
 
 
     @RequestMapping(value = DOWNLOAD_IMAGE ,method = RequestMethod.GET)
-    public ResponseEntity<byte[]> pinpadImage(@PathVariable String id) {
+    public ResponseEntity<byte[]> pinpadImage(@PathVariable String id) throws PinpadExpiredException {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_IMG);

@@ -1,0 +1,31 @@
+page-login {
+  .view {
+    background-image: url("#{$img-path}/fond-mire.jpg");
+    background-size: cover ;
+    background-position: center center;
+  }
+
+  .logo{
+    width: 54%;
+    margin: 0 25% 0 25%;
+  }
+
+  h6 {
+    margin-top: -0.4rem;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  h2 {
+    color: #{$footer-text-color};
+    text-align: center;
+  }
+
+  .nobkg {
+    background-color: transparent;
+  }
+
+  .white-label{
+    color: #{$footer-text-color};
+  }
+}

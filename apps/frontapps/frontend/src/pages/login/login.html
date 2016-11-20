@@ -1,0 +1,60 @@
+<ion-content padding class="view">
+
+  <ion-list>
+    <div class="logo">
+      <img src="assets/img/logo-mire.svg">
+    </div>
+
+    <h6>Bourse</h6>
+    <h2>Bienvenue</h2>
+    <form #loginForm="ngForm" novalidate>
+      <ion-item class="nobkg">
+        <ion-label floating color="primary">Identifiant</ion-label>
+        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <p [hidden]="username.valid || submitted == false" color="danger" padding-left>
+        Votre identifiant est requis
+      </p>
+
+      <ion-item  class="nobkg">
+        <ion-label floating color="primary">Date de naissance</ion-label>
+        <ion-input [(ngModel)]="login.birthdate" name="birthdate" type="date" #birthdate="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <p [hidden]="birthdate.valid || submitted == false" color="danger" padding-left>
+        Votre date de naissance est requise
+      </p>
+
+
+      <ion-item  class="nobkg">
+        <ion-checkbox [(ngModel)]="login.remember" name="remember" #remember="ngModel" color="vibrant"></ion-checkbox>
+        <ion-label color="primary">Mémoriser les données</ion-label>
+      </ion-item>
+
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button (click)="onLogin(loginForm)" type="submit" color="secondary" block>Se connecter</button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-list>
+
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-row>
+    <ion-col width-50>
+      <button (click)="presentForgotPassword()" class="white-label nobkg">
+        <div>Codes d'accès oubliés</div>
+      </button>
+    </ion-col>
+    <ion-col width-50 text-right>
+      <button class="nobkg" class="white-label nobkg">
+        <div>L'offre BforBank</div>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -10,9 +10,10 @@
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:        #fff;
-$background-color:  #fff;
+$text-color       : #fff;
+$background-color : #fff;
 $footer-text-color: #fff;
+$white            : #fff;
 
 $img-path: "../assets/img";
 $base-font-size: 16px;
@@ -76,7 +77,10 @@ $ionicons-font-path: "../assets/fonts";
 
 
 
-
+//Font en em
+@function offsetPinpad($number) {
+  @return $number * 46px;
+}
 
 //Font en em
 @function em($target, $context: $base-font-size) {

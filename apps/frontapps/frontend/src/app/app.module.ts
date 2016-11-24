@@ -8,7 +8,9 @@ import { TabsPage } from '../pages/tabs/tabs';
 import {LoginPage} from "../pages/login/login";
 import {UserData} from "../providers/user-data";
 import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
-
+import {PinpadPage} from "../pages/pinpad/pinpad";
+import {PinpadProvider} from "../providers/pinpad-provider";
+import { Storage } from '@ionic/storage';
 @NgModule({
   declarations: [
     MyApp,
@@ -17,7 +19,8 @@ import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
     HomePage,
     TabsPage,
     LoginPage,
-    ForgotPasswordPage
+    ForgotPasswordPage,
+    PinpadPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -30,8 +33,9 @@ import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
     HomePage,
     TabsPage,
     LoginPage,
-    ForgotPasswordPage
+    ForgotPasswordPage,
+    PinpadPage
   ],
-  providers: [UserData]
+  providers: [UserData,PinpadProvider,Storage]
 })
 export class AppModule {}

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {NavController, ModalController} from 'ionic-angular';
+import {NavController, ModalController, NavParams} from 'ionic-angular';
 import {UserData} from "../../providers/user-data";
 import {ForgotPasswordPage} from "../forgot-password/forgot-password";
+import {PinpadPage} from "../pinpad/pinpad";
 
 /*
   Generated class for the Login page.
@@ -21,10 +22,14 @@ export class LoginPage {
   submitted = false;
 
   constructor(
-      public navCtrl: NavController
-    , public userData: UserData
-    ,public modalCtrl: ModalController
-  ) { }
+        public navCtrl: NavController
+      , public userData: UserData
+      , public modalCtrl: ModalController
+      , public params:NavParams
+  ) {
+    console.log(params.data);
+    this.login = params.data || {remember: false} ;
+  }
 
 
   ionViewDidLoad() {
@@ -36,8 +41,9 @@ export class LoginPage {
     this.submitted = true;
 
     if (form.valid) {
+
       //this.userData.login(this.login.username);
-      //this.navCtrl.push(TabsPage);
+      this.navCtrl.setRoot(PinpadPage,this.login);
     }
   }
 

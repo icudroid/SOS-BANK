@@ -1,12 +1,74 @@
+
+
 <ion-content padding class="view">
+  <div class="logo">
+    <img src="assets/img/logo-mire.svg">
+  </div>
 
-    <div class="logo">
-      <img src="assets/img/logo-mire.svg">
-    </div>
+  <h6>Mon application</h6>
+  <h2>Bienvenue</h2>
 
-    <h6>Bourse</h6>
-    <h2>Bienvenue</h2>
+  <div style="padding:15px;"></div>
+  <h6>Entrez votre code secret</h6>
+  <div style="padding:15px;"></div>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col width-25 ></ion-col>
+      <ion-col width-50 center>
+        <div *ngFor="let num of [0,1,2,3,4,5]" class="pindpad-count" [attr.data-state]="activeState(num)"></div>
+        <div style="clear: both"></div>
+      </ion-col>
+      <ion-col width-25 >
+        <button clear ion-button icon-only (click)="padReset()">
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div style="padding:15px;"></div>
+
+  <ion-grid>
+    <ion-row >
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(0)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-0"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(1)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-1"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(2)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-2"></button>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(3)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-3"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(4)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-4"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(5)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-5"></button>
+      </ion-col>
+    </ion-row >
+    <ion-row>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(6)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-6"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(7)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-7"></button>
+      </ion-col>
+      <ion-col width-33 center text-center>
+        <button ion-button icon-only (click)="padClick(8)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-8"></button>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col center text-center>
+        <button ion-button icon-only (click)="padClick(9)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-9"></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 
 

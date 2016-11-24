@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController, NavParams} from "ionic-angular";
+import {PinpadProvider} from "../../providers/pinpad-provider";
+import {LoginPage} from "../login/login";
 
 /*
   Generated class for the Pinpad page.
@@ -13,10 +15,48 @@ import { NavController } from 'ionic-angular';
 })
 export class PinpadPage {
 
-  constructor(public navCtrl: NavController) {}
+  login: {username?: string, birthdate?: Date, remember?:boolean} = {};
+  userPinpad: {pinpadId?: string, imgUrl?: Date} = {};
+  count:number = 0;
+  password : string ="";
+
+  constructor(
+      public navCtrl: NavController
+    , public pinpad : PinpadProvider
+    , public params:NavParams
+  ) {
+    this.login = params.data;
+    this.count = 0;
+    this.password = "";
+  }
 
   ionViewDidLoad() {
-    console.log('Hello PinpadPage Page');
+    this.pinpad.getPinpad().subscribe(res => {
+      this.userPinpad = res;
+    });
+  }
+
+
+  goBack(){
+    this.navCtrl.setRoot(LoginPage,this.login);
+  }
+
+  activeState(num:number):string{
+    if(this.count > num) return "active";
+    return "";
+  }
+
+  padClick(num:number){
+    this.count++;
+    this.password+=num.toString();
+    if(this.count==6){
+      console.log("log user");
+    }
+  }
+
+  padReset(){
+    this.count=0;
+    this.password="";
   }
 
 }

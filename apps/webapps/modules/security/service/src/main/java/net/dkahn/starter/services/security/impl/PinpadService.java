@@ -87,10 +87,11 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     }
 
     private boolean isValid(Pinpad pinpad) throws PinpadExpiredException {
-        LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadLive);
+/*        LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadLive);
         if(expiration.isAfter(LocalDateTime.now()))
             throw new PinpadExpiredException();
 
+        return true;*/
         return true;
     }
 

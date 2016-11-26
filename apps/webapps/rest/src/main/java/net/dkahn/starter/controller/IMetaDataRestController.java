@@ -1,14 +1,17 @@
 package net.dkahn.starter.controller;
 
 /**
- * Created by dev on 17/11/16.
+ * Metadata pour les controlleurs
  */
-public class IMetaDataRestController {
+class IMetaDataRestController {
 
     interface PinpadRestController {
-        String PREFIX_PATH = "/pinpad";
-        String GENERATE = "";
-        String DOWNLOAD_IMAGE = "/{id}/img";
+        String PREFIX_PATH              = "/pinpad";
+        String GENERATE                 = "";
+        String DOWNLOAD_IMAGE           = "/{id}/img";
+    }
 
+    interface UserRestController {
+        String LOGOUT                   = "/logout";
     }
 }

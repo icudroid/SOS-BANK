@@ -79,7 +79,7 @@ $ionicons-font-path: "../assets/fonts";
 
 //Font en em
 @function offsetPinpad($number) {
-  @return $number * 46px;
+  @return  - $number * 46px;
 }
 
 //Font en em

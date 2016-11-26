@@ -3,10 +3,11 @@ package net.dkahn.starter.services.security.impl;
 import net.dkahn.starter.core.repositories.security.IPinpadRepository;
 import net.dkahn.starter.domains.security.Pinpad;
 import net.dkahn.starter.services.security.IPinpadService;
+import net.dkahn.starter.services.security.PinpadConfigProperties;
+import net.dkahn.starter.services.security.exception.PinpadExpiredException;
 import net.dkahn.starter.tools.logger.Log;
 import net.dkahn.starter.tools.service.impl.GenericServiceImpl;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,36 +15,26 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by dev on 16/11/16.
+ * Pinpad service
  */
 @Service
 public class PinpadService extends GenericServiceImpl<Pinpad, String> implements IPinpadService {
 
-    public static final int PINPAD_LENGTH = 10;
-    public static final int IMG_WIDTH = 46;
-    public static final int IMG_HEIGHT = 46;
-    public static final int IMG_HEIGHT_GLOBAL = IMG_WIDTH * PINPAD_LENGTH;
-
-    @Value("${pinpad.path.base}")
-    private String base;
-
-    @Value("${pinpad.duration:120}")
-    private Integer pinpadLive;
+    private final PinpadConfigProperties pinpadConfigProperties;
 
     @Log
-    private Logger log;
+    private Logger log = null;
 
-    private static final String IMAGE_EXTENTION = ".png";
-
-    public PinpadService(IPinpadRepository pinpadRepository){
+    public PinpadService(IPinpadRepository pinpadRepository, PinpadConfigProperties pinpadConfigProperties){
+        this.pinpadConfigProperties = pinpadConfigProperties;
         repository = pinpadRepository;
     }
 
@@ -52,8 +43,8 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     public Pinpad generate(){
         Pinpad res = new Pinpad();
 
-        List<Integer> numbers = new ArrayList<>(PINPAD_LENGTH);
-        for (int i = 0; i < PINPAD_LENGTH; i++) {
+        List<Integer> numbers = new ArrayList<>(pinpadConfigProperties.getLength());
+        for (int i = 0; i < pinpadConfigProperties.getLength(); i++) {
             numbers.add(i);
         }
 
@@ -67,7 +58,7 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
 
     @Override
     @Transactional
-    public String decodePassword(String id, String encodePassword) throws PinpadExpiredException{
+    public String decodePassword(String id, String encodePassword) throws PinpadExpiredException {
 
         Pinpad pinpad = repository.get(id);
 
@@ -87,11 +78,9 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     }
 
     private boolean isValid(Pinpad pinpad) throws PinpadExpiredException {
-/*        LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadLive);
+        LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadConfigProperties.getDuration());
         if(expiration.isAfter(LocalDateTime.now()))
             throw new PinpadExpiredException();
-
-        return true;*/
         return true;
     }
 
@@ -106,11 +95,9 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     private String findPathImage(Pinpad pinpad, Integer position) {
         Integer image = pinpad.getCorrespondance().get(position);
 
-        StringBuilder path = new StringBuilder(base);
-        path.append(image.toString());
-        path.append(IMAGE_EXTENTION);
+        String imgPath = pinpadConfigProperties.getBase() + image.toString() +
+                pinpadConfigProperties.getImageExtention();
 
-        String imgPath = path.toString();
         log.debug("Path image mire pour pinpad {} => {}",pinpad.getId(), imgPath);
 
         return imgPath;
@@ -122,9 +109,10 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     public byte[] generateImage(String id) throws IOException, PinpadExpiredException {
 
         Pinpad pinpad = repository.get(id);
+        pinpad.setProvided(true);
         isValid(pinpad);
 
-        BufferedImage img = new BufferedImage(IMG_WIDTH, IMG_HEIGHT_GLOBAL,BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(pinpadConfigProperties.getImageWidth(), pinpadConfigProperties.getImageHeight(),BufferedImage.TYPE_INT_RGB);
         Graphics g = img.createGraphics();
 
         int offset = 0;
@@ -133,12 +121,12 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
             BufferedImage image = ImageIO.read(new FileInputStream(imagePath));
 
             g.drawImage(image, 0, offset, null);
-            offset+=IMG_HEIGHT;
+            offset+=pinpadConfigProperties.getImageHeight();
         }
 
         g.dispose();
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write( img, "PNG", baos );
             baos.flush();
             return  baos.toByteArray();

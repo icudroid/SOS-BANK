@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class RestUser extends DefaultUserDetails {
 
-    public RestUser(User user, List<GrantedAuthority> grantedAuthorities) {
+    RestUser(User user, List<GrantedAuthority> grantedAuthorities) {
         super(user, grantedAuthorities);
     }
 }

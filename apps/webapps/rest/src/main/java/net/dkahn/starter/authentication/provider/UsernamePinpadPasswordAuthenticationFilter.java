@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by dev on 17/11/16.
+ * Filter pour cree le notre Credential
  */
 public class UsernamePinpadPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    public static final String SPRING_SECURITY_FORM_PINPAD_KEY   = "pinpad";
+    private static final String SPRING_SECURITY_FORM_PINPAD_KEY   = "pinpad";
     private String pinpadParameter = SPRING_SECURITY_FORM_PINPAD_KEY;
 
     private boolean postOnly = true;
@@ -61,10 +61,11 @@ public class UsernamePinpadPasswordAuthenticationFilter extends UsernamePassword
     }
 
 
-    protected String obtainPinpad(HttpServletRequest request) {
+    private String obtainPinpad(HttpServletRequest request) {
         return request.getParameter(pinpadParameter);
     }
 
+    @SuppressWarnings("unused")
     public void setPinpadParameter(String pinpadParameter) {
         Assert.hasText(pinpadParameter, "Pinpad parameter must not be empty or null");
         this.pinpadParameter = pinpadParameter;
@@ -75,6 +76,7 @@ public class UsernamePinpadPasswordAuthenticationFilter extends UsernamePassword
         this.postOnly = postOnly;
     }
 
+    @SuppressWarnings("unused")
     public final String getPinpadParameter() {
         return pinpadParameter;
     }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Http, Headers, Response} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Events} from "ionic-angular";
 import {Observable} from "rxjs";
 import { Storage } from '@ionic/storage';
+import {environment} from "../app/environment";
 
 /*
   Generated class for the UserData provider.
@@ -15,7 +16,7 @@ import { Storage } from '@ionic/storage';
 export class UserData {
 
   HAS_LOGGED_IN = 'hasLoggedIn';
-  private loginUrl:string ="http://localhost:8080/login";
+  private loginUrl:string = environment.restBase + "login";
 
   constructor(
               public http: Http
@@ -25,16 +26,26 @@ export class UserData {
     console.log('Hello UserData Provider');
   }
 
-  login(userPassword){
+  login(userPassword, pindpadId:string){
 
-    this.http.post(this.loginUrl,userPassword)
-      .map(res => res.json());
+    var username =userPassword.username;
+    var password = userPassword.password;
+    var birthdate = userPassword.birthdate;
 
-    /*this.storage.set(this.HAS_LOGGED_IN, true);
-    this.setUsername(username);
-    this.events.publish('user:login');*/
+    var creds = "username=" + username + "&password=" + password +"&birthdate=" + birthdate + "&pinpad=" + pindpadId;
+
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    this.http.post(this.loginUrl, creds, {
+      headers: headers
+    })
+    .subscribe(
+      data => this.loginSuccess(data),
+      err => this.logError(err,userPassword),
+      () => console.log('Authentication Complete')
+    );
   }
-
 
   // return a promise
   hasLoggedIn() {
@@ -49,14 +60,24 @@ export class UserData {
     this.events.publish('user:logout');
   }
 
-  setUsername(username) {
-    this.storage.set('username', username);
+  setAuthToken(token) {
+    this.storage.set('x-auth-token', token);
   }
 
-  getUsername() {
-    return this.storage.get('username').then((value) => {
+  getAuthToken() {
+    return this.storage.get('x-auth-token').then((value) => {
       return value;
     });
   }
 
+  private logError(err: any,userPassword:any) {
+    this.storage.remove(this.HAS_LOGGED_IN);
+    this.events.publish('user:login-error',userPassword);
+  }
+
+  private loginSuccess(data: Response) {
+    this.setAuthToken(data.headers.get('x-auth-token'))
+    this.storage.set(this.HAS_LOGGED_IN, true);
+    this.events.publish('user:login-sucess');
+  }
 }

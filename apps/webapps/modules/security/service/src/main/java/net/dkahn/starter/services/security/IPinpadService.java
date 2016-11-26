@@ -1,7 +1,7 @@
 package net.dkahn.starter.services.security;
 
 import net.dkahn.starter.domains.security.Pinpad;
-import net.dkahn.starter.services.security.impl.PinpadExpiredException;
+import net.dkahn.starter.services.security.exception.PinpadExpiredException;
 import net.dkahn.starter.tools.service.GenericService;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -27,5 +27,7 @@ public class Pinpad extends BaseEntity{
 
     @Convert(converter = IntArrayToStringConverter.class)
     private List<Integer> correspondance;
+
+    private boolean provided;
     
 }

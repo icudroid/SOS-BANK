@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
 import {PinpadProvider} from "../../providers/pinpad-provider";
 import {LoginPage} from "../login/login";
+import {UserData} from "../../providers/user-data";
 
 /*
   Generated class for the Pinpad page.
@@ -15,19 +16,19 @@ import {LoginPage} from "../login/login";
 })
 export class PinpadPage {
 
-  login: {username?: string, birthdate?: Date, remember?:boolean} = {};
+  login: {username?: string, birthdate?: Date, remember?:boolean, password?:string} = {};
   userPinpad: {pinpadId?: string, imgUrl?: Date} = {};
   count:number = 0;
-  password : string ="";
 
   constructor(
       public navCtrl: NavController
     , public pinpad : PinpadProvider
     , public params:NavParams
+    , public user : UserData
   ) {
     this.login = params.data;
     this.count = 0;
-    this.password = "";
+    this.login.password = "";
   }
 
   ionViewDidLoad() {
@@ -48,15 +49,15 @@ export class PinpadPage {
 
   padClick(num:number){
     this.count++;
-    this.password+=num.toString();
+    this.login.password+=num.toString();
     if(this.count==6){
-      console.log("log user");
+      this.user.login(this.login,this.userPinpad.pinpadId);
     }
   }
 
   padReset(){
     this.count=0;
-    this.password="";
+    this.login.password="";
   }
 
 }

@@ -1,7 +1,9 @@
 package net.dkahn.starter.authentication.provider;
 
 import net.dkahn.starter.services.security.IPinpadService;
-import net.dkahn.starter.services.security.impl.PinpadExpiredException;
+import net.dkahn.starter.services.security.IUserService;
+import net.dkahn.starter.services.security.exception.PinpadExpiredException;
+import net.dkahn.starter.services.security.exception.RestAuthenticationException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -17,7 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 
 /**
- * Created by dev on 16/11/16.
+ * Provider pour spring security
  */
 public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
     // ~ Static fields/initializers
@@ -48,6 +50,7 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     private UserDetailsService userDetailsService;
     private IPinpadService pindpadService;
+    private IUserService userService;
 
     public PinpadAuthenticationProvider() {
         setPasswordEncoder(new PlaintextPasswordEncoder());
@@ -84,14 +87,14 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
                     presentedPassword, salt)) {
                 logger.debug("Authentication failed: password does not match stored value");
 
-                //todo : ajout un authente KO
+                userService.loginFailure(userDetails.getUsername());
 
                 throw new BadCredentialsException(messages.getMessage(
                         "AbstractUserDetailsAuthenticationProvider.badCredentials",
                         "Bad credentials"));
             }
 
-            //todo : ajout un authente OK
+            userService.loginSuccess(userDetails.getUsername());
 
         } catch (JpaObjectRetrievalFailureException pinpadNotFound){
                 throw new BadCredentialsException("Pindpad not found");
@@ -112,6 +115,12 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
         try {
             loadedUser = this.getUserDetailsService().loadUserByUsername(username);
+            if(!loadedUser.isAccountNonLocked()){
+                if(!userService.checkLockedTimeExpired(loadedUser.getUsername())){
+                    throw new RestAuthenticationException("Account locked");
+                }
+            }
+
         }
         catch (UsernameNotFoundException notFound) {
             if (authentication.getCredentials() != null) {
@@ -232,4 +241,8 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
         return userDetailsService;
     }
 
+
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 }

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * Created by dev on 16/11/16.
+ * pinpad DTO
  */
 @Data
 @Builder

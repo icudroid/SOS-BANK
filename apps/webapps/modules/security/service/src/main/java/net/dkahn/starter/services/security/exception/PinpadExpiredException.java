@@ -1,4 +1,4 @@
-package net.dkahn.starter.services.security.impl;
+package net.dkahn.starter.services.security.exception;
 
 /**
  * Created by dev on 17/11/16.

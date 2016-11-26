@@ -22,4 +22,8 @@ public class UserAuthenticationAttempts extends BaseEntity{
     @OneToOne
     private User user;
     private int attempts;
+
+    public void increment() {
+        attempts++;
+    }
 }

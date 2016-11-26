@@ -16,12 +16,13 @@
 
 package net.dkahn.starter.config;
 
+import net.dkahn.starter.authentication.provider.FailureAjaxHandler;
 import net.dkahn.starter.authentication.provider.PinpadAuthenticationProvider;
+import net.dkahn.starter.authentication.provider.SuccessAjaxHandler;
 import net.dkahn.starter.authentication.provider.UsernamePinpadPasswordAuthenticationFilter;
 import net.dkahn.starter.services.security.IPinpadService;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.dkahn.starter.services.security.IUserService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,17 +30,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 /**
- * @author Rob Winch
- * @author Vedran Pavic
+* Security Config
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -51,34 +48,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private IPinpadService pinpadService;
 
-	@Resource
-	private DataSource dataSource;
-
 	@Bean
 	public PasswordEncoder passwordEncoder(){
 		return new StandardPasswordEncoder();
 	}
 
+	@Resource
+	private FailureAjaxHandler failureAjaxHandler;
 
-	@Bean(name = "authenticationFilter")
-	public UsernamePinpadPasswordAuthenticationFilter authenticationFilter(AuthenticationManager authenticationManager){
+	@Resource
+	private SuccessAjaxHandler successAjaxHandler;
+
+	@Resource
+	private IUserService userService;
+
+
+	@Bean
+	public UsernamePinpadPasswordAuthenticationFilter authenticationFilter() throws Exception {
 		UsernamePinpadPasswordAuthenticationFilter filter = new UsernamePinpadPasswordAuthenticationFilter();
-		filter.setAuthenticationManager(authenticationManager);
+		filter.setAuthenticationManager(authenticationManager());
+		filter.setAuthenticationSuccessHandler(successAjaxHandler);
+		filter.setAuthenticationFailureHandler(failureAjaxHandler);
 		return filter;
 	}
 
 
 
 
-
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PinpadAuthenticationProvider authenticationProvider = new PinpadAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		authenticationProvider.setUserDetailsService(authenticationUserService);
 		authenticationProvider.setPinpadService(pinpadService);
+		authenticationProvider.setUserService(userService);
 		auth.authenticationProvider(authenticationProvider);
 	}
+
 
 
 	@Override
@@ -94,9 +100,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.requestCache()
 					.requestCache(new NullRequestCache())
 			.and()
+				.addFilterBefore(authenticationFilter(),UsernamePasswordAuthenticationFilter.class)
+				.formLogin().loginPage("/login")
+			.and()
 				.httpBasic()
-			;
+		;
 	}
+
+
+
 
 
 }

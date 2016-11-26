@@ -1,6 +1,7 @@
 package net.dkahn.starter.services.security;
 
 import net.dkahn.starter.domains.security.User;
+import net.dkahn.starter.services.security.exception.RestAuthenticationException;
 import net.dkahn.starter.tools.service.GenericService;
 
 /**
@@ -12,5 +13,5 @@ public interface IUserService extends GenericService<User, Long> {
 
     void loginSuccess(String username);
 
-    boolean checkLockedTimeExpired(String username);
+    boolean checkLockedTimeExpired(String username) throws RestAuthenticationException;
 }

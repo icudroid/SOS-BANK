@@ -32,15 +32,14 @@ public class PinpadRestController {
 
     private final IPinpadService pinpadService;
 
-    public PinpadRestController(@Value("${env.baseUrl}:http://localhost:8080/") String base, IPinpadService pinpadService) {
-        logger.debug("Construct PinpadRestController with ");
+    public PinpadRestController(@Value("${env.baseUrl}") String base, IPinpadService pinpadService) {
         this.base = base;
         this.pinpadService = pinpadService;
     }
 
 
     @SuppressWarnings("unused")
-    @PostMapping(GENERATE)
+    @RequestMapping(GENERATE)
     public PinpadDTO generatePinpad() {
         Pinpad generate = pinpadService.generate();
         return PinpadDTO.builder()
@@ -51,7 +50,7 @@ public class PinpadRestController {
 
 
     @SuppressWarnings("unused")
-    @GetMapping(value = DOWNLOAD_IMAGE)
+    @RequestMapping(value = DOWNLOAD_IMAGE)
     public ResponseEntity<byte[]> pinpadImage(@PathVariable String id) throws PinpadExpiredException {
         try {
             HttpHeaders headers = new HttpHeaders();

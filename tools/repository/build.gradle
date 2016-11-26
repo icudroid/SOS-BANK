@@ -5,7 +5,7 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile libs.queryDsl
-}
+    }
 
 
 bootRepackage.enabled = false

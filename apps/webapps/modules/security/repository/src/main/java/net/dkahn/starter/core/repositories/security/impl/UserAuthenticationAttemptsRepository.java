@@ -7,10 +7,12 @@ import net.dkahn.starter.domains.security.QUserAuthenticationAttempts;
 import net.dkahn.starter.domains.security.Role;
 import net.dkahn.starter.domains.security.UserAuthenticationAttempts;
 import net.dkahn.starter.tools.repository.jpa.GenericRepositoryJpa;
+import org.springframework.stereotype.Repository;
 
 /**
- * Created by dev on 25/11/16.
+ * Nombre de tentation de connexion
  */
+@Repository
 public class UserAuthenticationAttemptsRepository extends GenericRepositoryJpa<UserAuthenticationAttempts,Long> implements IUserAuthenticationAttemptsRepository {
     @Override
     public UserAuthenticationAttempts findByUsername(String username) {

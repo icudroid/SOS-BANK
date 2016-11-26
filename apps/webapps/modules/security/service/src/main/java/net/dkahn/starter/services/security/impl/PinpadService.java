@@ -79,8 +79,8 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
 
     private boolean isValid(Pinpad pinpad) throws PinpadExpiredException {
         LocalDateTime expiration = pinpad.getCreationDate().plusSeconds(pinpadConfigProperties.getDuration());
-        if(expiration.isAfter(LocalDateTime.now()))
-            throw new PinpadExpiredException();
+        if(expiration.isBefore(LocalDateTime.now()))
+            throw new PinpadExpiredException("Pinpad already provided");
         return true;
     }
 
@@ -109,10 +109,13 @@ public class PinpadService extends GenericServiceImpl<Pinpad, String> implements
     public byte[] generateImage(String id) throws IOException, PinpadExpiredException {
 
         Pinpad pinpad = repository.get(id);
+        if(pinpad.isProvided()){
+            throw new PinpadExpiredException("Already provided");
+        }
         pinpad.setProvided(true);
         isValid(pinpad);
 
-        BufferedImage img = new BufferedImage(pinpadConfigProperties.getImageWidth(), pinpadConfigProperties.getImageHeight(),BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(pinpadConfigProperties.getImageWidth(), pinpadConfigProperties.getImageHeight()*pinpadConfigProperties.getLength(),BufferedImage.TYPE_INT_RGB);
         Graphics g = img.createGraphics();
 
         int offset = 0;

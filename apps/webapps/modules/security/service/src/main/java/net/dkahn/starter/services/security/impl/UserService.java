@@ -56,7 +56,7 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
         HistoryUserAuthenticationAttempts history = new HistoryUserAuthenticationAttempts();
         history.setUser(user);
 
-        if (attempts.getAttempts() > MAX_ATTEMPTS) {
+        if (attempts.getAttempts() >= MAX_ATTEMPTS) {
             user.setBlocked(true);
             history.setStatus(AuthenticationStatus.BLOCKED);
         } else {
@@ -79,6 +79,8 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
             attemptsRepository.save(attempts);
         }
 
+        attempts.setAttempts(0);
+
         HistoryUserAuthenticationAttempts history = new HistoryUserAuthenticationAttempts();
         history.setUser(user);
         history.setStatus(AuthenticationStatus.OK);
@@ -89,10 +91,10 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
     @Override
     public boolean checkLockedTimeExpired(String username) throws RestAuthenticationException{
         UserAuthenticationAttempts attempts = attemptsRepository.findByUsername(username);
-        if (attempts.getAttempts() > MAX_ATTEMPTS) {
+        if (attempts.getAttempts() >= MAX_ATTEMPTS) {
             LocalDateTime expiration = attempts.getCreationDate().plusMinutes(lockDuration);
 
-            if (expiration.isAfter(LocalDateTime.now())) {
+            if (expiration.isBefore(LocalDateTime.now())) {
                 attempts.setAttempts(0);
                 return true;
             }
@@ -102,4 +104,7 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
         }
         return true;
     }
+
+
+
 }

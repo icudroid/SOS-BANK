@@ -7,6 +7,10 @@ dependencies {
     compile project(':apps:webapps:modules:security:domain')
 
     compile "org.springframework.security:spring-security-core"
+    compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+
+    testCompile project(":core:domains:business")
+
 }
 
 

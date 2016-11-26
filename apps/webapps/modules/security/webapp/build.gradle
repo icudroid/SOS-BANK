@@ -1,6 +1,6 @@
 group 'net.dkahn.starter.apps.webapps.modules'
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 
 dependencies {

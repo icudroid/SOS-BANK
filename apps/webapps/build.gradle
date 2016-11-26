@@ -10,7 +10,7 @@ subprojects { subProject ->
             }
         }
 
-        if (subProject.plugins.hasPlugin('spring-boot') && subProject.bootRepackage.enabled) {
+        if (subProject.plugins.hasPlugin('org.springframework.boot') && subProject.bootRepackage.enabled) {
             task zip(type: Zip, dependsOn: bootRepackage) {
                 def fileName = "${jar.baseName}-${jar.version}"
                 includeEmptyDirs = true

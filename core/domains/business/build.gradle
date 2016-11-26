@@ -14,7 +14,7 @@ configurations {
 }
 
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 
 dependencies {

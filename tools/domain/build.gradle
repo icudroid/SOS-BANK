@@ -16,7 +16,7 @@ configurations {
 
 
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 bootRepackage {
     enabled = false //we want 'blessed' version numbers, but a not executable jar

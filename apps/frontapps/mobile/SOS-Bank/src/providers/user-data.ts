@@ -17,6 +17,7 @@ export class UserData {
 
   HAS_LOGGED_IN = 'hasLoggedIn';
   private loginUrl:string = environment.restBase + "login";
+  private logoutUrl:string = environment.restBase + "logout";
 
   constructor(
               public http: Http
@@ -56,7 +57,10 @@ export class UserData {
 
   logout() {
     this.storage.remove(this.HAS_LOGGED_IN);
-    this.storage.remove('username');
+    this.http.post(this.logoutUrl,{})
+      .subscribe(
+        () => console.log('Logout')
+      );
     this.events.publish('user:logout');
   }
 
@@ -78,6 +82,6 @@ export class UserData {
   private loginSuccess(data: Response) {
     this.setAuthToken(data.headers.get('x-auth-token'))
     this.storage.set(this.HAS_LOGGED_IN, true);
-    this.events.publish('user:login-sucess');
+    this.events.publish('user:login');
   }
 }

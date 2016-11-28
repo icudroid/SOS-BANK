@@ -2,6 +2,7 @@ package net.dkahn.starter.domains.security;
 
 
 import net.dkahn.starter.tools.domain.BaseEntity;
+import net.dkahn.starter.tools.domain.converter.LocalDatePersistenceConverter;
 import net.dkahn.starter.tools.domain.converter.LocalDateTimePersistenceConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,6 +46,9 @@ public abstract class User extends BaseEntity {
 
     @Convert(converter = LocalDateTimePersistenceConverter.class)
     protected LocalDateTime expirationDate;
+
+    @Convert(converter = LocalDatePersistenceConverter.class)
+    protected LocalDate birthdate;
 
     @ManyToMany
     @JoinTable( name = "user_profile",

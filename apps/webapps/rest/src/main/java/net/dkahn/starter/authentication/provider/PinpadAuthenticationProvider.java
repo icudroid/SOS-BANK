@@ -1,5 +1,6 @@
 package net.dkahn.starter.authentication.provider;
 
+import net.dkahn.starter.authentication.RestUser;
 import net.dkahn.starter.services.security.IPinpadService;
 import net.dkahn.starter.services.security.IUserService;
 import net.dkahn.starter.services.security.exception.PinpadExpiredException;
@@ -79,6 +80,11 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
         }
 
         try {
+
+            if(credentials.getBirthdate().equals(((RestUser)userDetails).getBirthdate())){
+                throw new BadCredentialsException("Bad user information");
+            }
+
             String presentedPassword = pindpadService.decodePassword(credentials.getPindpadId(), credentials.getPassword());
 
             pindpadService.remove(credentials.getPindpadId());

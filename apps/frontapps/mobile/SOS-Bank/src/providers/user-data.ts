@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
+import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Events} from "ionic-angular";
 import {Observable} from "rxjs";
@@ -56,12 +56,20 @@ export class UserData {
   }
 
   logout() {
-    this.storage.remove(this.HAS_LOGGED_IN);
-    this.http.post(this.logoutUrl,{})
-      .subscribe(
-        () => console.log('Logout')
-      );
-    this.events.publish('user:logout');
+
+     this.getAuthToken().then(token => {
+       let headers = new Headers({ 'x-auth-token':token});
+      let options = new RequestOptions({ headers: headers });
+
+      this.storage.remove(this.HAS_LOGGED_IN);
+      this.storage.remove('x-auth-token');
+      this.http.post(this.logoutUrl,{},options)
+        .subscribe(
+          () => console.log('Logout')
+        );
+      this.events.publish('user:logout');
+
+    });
   }
 
   setAuthToken(token) {
@@ -80,7 +88,7 @@ export class UserData {
   }
 
   private loginSuccess(data: Response) {
-    this.setAuthToken(data.headers.get('x-auth-token'))
+    this.setAuthToken(data.headers.get('x-auth-token'));
     this.storage.set(this.HAS_LOGGED_IN, true);
     this.events.publish('user:login');
   }

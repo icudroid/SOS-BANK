@@ -27,13 +27,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
 * Security Config
@@ -75,6 +83,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+	@Bean
+	public LogoutSuccessHandler logoutHandler() {
+		return new HttpStatusReturningLogoutSuccessHandler();
+	}
+
+
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PinpadAuthenticationProvider authenticationProvider = new PinpadAuthenticationProvider();
@@ -84,8 +99,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationProvider.setUserService(userService);
 		auth.authenticationProvider(authenticationProvider);
 	}
-
-
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -102,13 +115,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.addFilterBefore(authenticationFilter(),UsernamePasswordAuthenticationFilter.class)
 				.formLogin().loginPage("/login")
+			.and().logout().logoutSuccessHandler(logoutHandler())
+			.and()
+				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
 			.and()
 				.httpBasic()
 		;
 	}
 
+	@Bean
+	public AuthenticationEntryPoint authenticationEntryPoint() {
+		return new AuthenticationEntryPoint(){
 
-
+			@Override
+			public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+		};
+	}
 
 
 }

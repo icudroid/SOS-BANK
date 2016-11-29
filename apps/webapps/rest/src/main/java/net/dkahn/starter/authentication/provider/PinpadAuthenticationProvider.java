@@ -1,6 +1,7 @@
 package net.dkahn.starter.authentication.provider;
 
 import net.dkahn.starter.authentication.RestUser;
+import net.dkahn.starter.domains.security.UserAuthenticationAttempts;
 import net.dkahn.starter.services.security.IPinpadService;
 import net.dkahn.starter.services.security.IUserService;
 import net.dkahn.starter.services.security.exception.PinpadExpiredException;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
+
+import java.time.LocalDateTime;
 
 /**
  * Provider pour spring security
@@ -81,8 +84,8 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
         try {
 
-            if(credentials.getBirthdate().equals(((RestUser)userDetails).getBirthdate())){
-                throw new BadCredentialsException("Bad user information");
+            if(!credentials.getBirthdate().equals(((RestUser)userDetails).getBirthdate())){
+                failureLogin(userDetails);
             }
 
             String presentedPassword = pindpadService.decodePassword(credentials.getPindpadId(), credentials.getPassword());
@@ -93,11 +96,13 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
                     presentedPassword, salt)) {
                 logger.debug("Authentication failed: password does not match stored value");
 
-                userService.loginFailure(userDetails.getUsername());
-
+                failureLogin(userDetails);
+                return;
+/*
                 throw new BadCredentialsException(messages.getMessage(
                         "AbstractUserDetailsAuthenticationProvider.badCredentials",
                         "Bad credentials"));
+*/
             }
 
             userService.loginSuccess(userDetails.getUsername());
@@ -108,6 +113,16 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
             throw new BadCredentialsException("Pindpad expired");
         }
 
+    }
+
+    private void failureLogin(UserDetails userDetails) {
+        if(userService.loginFailure(userDetails.getUsername())){
+            UserAuthenticationAttempts attemps = userService.findAttempsByUsername(userDetails.getUsername());
+            LocalDateTime expiration = attemps.getCreationDate().plusMinutes(userService.getLockDuration());
+            throw new RestAuthenticationException("Bad credentials",3,"account.locked",expiration);
+        }
+        UserAuthenticationAttempts attemps = userService.findAttempsByUsername(userDetails.getUsername());
+        throw new RestAuthenticationException("Bad credentials",attemps.getAttempts(),"password.retry.err",null);
     }
 
     protected void doAfterPropertiesSet() throws Exception {
@@ -123,7 +138,9 @@ public class PinpadAuthenticationProvider extends AbstractUserDetailsAuthenticat
             loadedUser = this.getUserDetailsService().loadUserByUsername(username);
             if(!loadedUser.isAccountNonLocked()){
                 if(!userService.checkLockedTimeExpired(loadedUser.getUsername())){
-                    throw new RestAuthenticationException("Account locked");
+                    UserAuthenticationAttempts attemps = userService.findAttempsByUsername(loadedUser.getUsername());
+                    LocalDateTime expiration = attemps.getCreationDate().plusMinutes(userService.getLockDuration());
+                    throw new RestAuthenticationException("Account locked",attemps.getAttempts(),"account.locked",expiration);
                 }
             }
 

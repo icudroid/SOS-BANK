@@ -41,7 +41,7 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
 
     @Transactional
     @Override
-    public void loginFailure(String username) {
+    public boolean loginFailure(String username) {
         UserAuthenticationAttempts attempts = attemptsRepository.findByUsername(username);
         User user = ((IUserRepository) repository).findByLoginEnabled(username);
         if (attempts == null) {
@@ -65,6 +65,8 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
 
         authenticationAttemptsRepository.save(history);
 
+        return AuthenticationStatus.BLOCKED.equals(history.getStatus());
+
     }
 
     @Transactional
@@ -87,6 +89,12 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
         authenticationAttemptsRepository.save(history);
     }
 
+
+    @Override
+    public long getLockDuration(){
+        return lockDuration;
+    }
+
     @Transactional
     @Override
     public boolean checkLockedTimeExpired(String username) throws RestAuthenticationException{
@@ -105,6 +113,18 @@ public class UserService extends GenericServiceImpl<User, Long> implements IUser
         return true;
     }
 
+
+    @Transactional
+    @Override
+    public UserAuthenticationAttempts findAttempsByUsername(String username) throws RestAuthenticationException{
+        return attemptsRepository.findByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public User findByUsername(String username) {
+        return ((IUserRepository)repository).findByLogin(username);
+    }
 
 
 }

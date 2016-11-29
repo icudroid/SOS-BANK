@@ -19,4 +19,6 @@ public interface IUserRepository extends IGenericRepository<User,Long> {
     List<User> findUsersWithProfile(Integer idProfile);
 
     User findByLogin(String username);
+
 }
+

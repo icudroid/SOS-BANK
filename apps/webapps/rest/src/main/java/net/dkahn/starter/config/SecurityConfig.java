@@ -16,11 +16,10 @@
 
 package net.dkahn.starter.config;
 
-import net.dkahn.starter.authentication.provider.FailureAjaxHandler;
-import net.dkahn.starter.authentication.provider.PinpadAuthenticationProvider;
-import net.dkahn.starter.authentication.provider.SuccessAjaxHandler;
-import net.dkahn.starter.authentication.provider.UsernamePinpadPasswordAuthenticationFilter;
+import net.dkahn.starter.authentication.provider.*;
+import net.dkahn.starter.authentication.provider.service.ProfileRememberService;
 import net.dkahn.starter.services.security.IPinpadService;
+import net.dkahn.starter.services.security.IProfileTokenService;
 import net.dkahn.starter.services.security.IUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -70,23 +69,74 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private IUserService userService;
 
+	@Resource
+	private IProfileTokenService profileTokenService;
 
+/*
+	@Resource
+	private DataSource dataSource;
+*/
+
+	@Bean
+	public ProfileRememberService profileRememberService(){
+		ProfileRememberService service = new ProfileRememberService();
+		service.setProfileTokenService(profileTokenService);
+		service.setUserDetailsService(authenticationUserService);
+		return service;
+	}
+
+
+/*
 	@Bean
 	public UsernamePinpadPasswordAuthenticationFilter authenticationFilter() throws Exception {
 		UsernamePinpadPasswordAuthenticationFilter filter = new UsernamePinpadPasswordAuthenticationFilter();
 		filter.setAuthenticationManager(authenticationManager());
 		filter.setAuthenticationSuccessHandler(successAjaxHandler);
 		filter.setAuthenticationFailureHandler(failureAjaxHandler);
+		filter.setProfileRememberService(profileRememberService());
 		return filter;
 	}
+*/
 
-
+	@Bean
+	public RestAuthenticationFilter tokenProfileAuthenticationFilter() throws Exception {
+		RestAuthenticationFilter filter = new RestAuthenticationFilter();
+		filter.setAuthenticationManager(authenticationManager());
+		filter.setUserDetailsService(authenticationUserService);
+		filter.setProfileTokenService(profileRememberService());
+		filter.setAuthenticationSuccessHandler(successAjaxHandler);
+		filter.setAuthenticationFailureHandler(failureAjaxHandler);
+		filter.setProfileRememberService(profileRememberService());
+		return filter;
+	}
 
 
 	@Bean
 	public LogoutSuccessHandler logoutHandler() {
 		return new HttpStatusReturningLogoutSuccessHandler();
 	}
+
+
+
+	@Bean
+	public AuthenticationEntryPoint authenticationEntryPoint() {
+		return new AuthenticationEntryPoint(){
+
+			@Override
+			public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+		};
+	}
+
+/*
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+		db.setDataSource(dataSource);
+		return db;
+	}
+*/
 
 
 
@@ -107,32 +157,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/pinpad").permitAll()
+				.antMatchers("/profile").permitAll()
+				.antMatchers("/profile/invalidate").permitAll()
 				.antMatchers("/pinpad/*/img").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.requestCache()
 					.requestCache(new NullRequestCache())
 			.and()
-				.addFilterBefore(authenticationFilter(),UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(tokenProfileAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
 				.formLogin().loginPage("/login")
-			.and().logout().logoutSuccessHandler(logoutHandler())
+			.and()
+				.logout().logoutSuccessHandler(logoutHandler())
 			.and()
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+/*			.and()
+				.rememberMe()
+					.userDetailsService(authenticationUserService)
+					.tokenRepository(persistentTokenRepository())
+					.tokenValiditySeconds(1209600)*/
 			.and()
 				.httpBasic()
 		;
 	}
 
-	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint() {
-		return new AuthenticationEntryPoint(){
 
-			@Override
-			public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-			}
-		};
-	}
 
 
 }

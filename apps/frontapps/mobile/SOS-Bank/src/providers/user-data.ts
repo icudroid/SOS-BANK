@@ -18,6 +18,9 @@ export class UserData {
   HAS_LOGGED_IN = 'hasLoggedIn';
   private loginUrl:string = environment.restBase + "login";
   private logoutUrl:string = environment.restBase + "logout";
+  private profileUrl:string =environment.restBase + "profile";
+  private invalidateProfileUrl:string =environment.restBase + "profile/invalidate";
+
 
   constructor(
               public http: Http
@@ -32,20 +35,32 @@ export class UserData {
     var username =userPassword.username;
     var password = userPassword.password;
     var birthdate = userPassword.birthdate;
+    var rememberProfile = userPassword.remember;
 
-    var creds = "username=" + username + "&password=" + password +"&birthdate=" + birthdate + "&pinpad=" + pindpadId;
+    var creds = "username=" + username + "&password=" + password +"&birthdate=" + birthdate + "&pinpad=" + pindpadId
+                            + "&remember-profile="+rememberProfile;
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-    this.http.post(this.loginUrl, creds, {
+    return this.http.post(this.loginUrl, creds, {
       headers: headers
-    })
-    .subscribe(
-      data => this.loginSuccess(data),
-      err => this.logError(err,userPassword),
-      () => console.log('Authentication Complete')
+    });
+  }
+
+  invalidateProfile(){
+    this.http.get(this.invalidateProfileUrl, {}).subscribe(
+      data => {
+        this.events.publish('user:profile-invalidate');
+      },
+      err => {}
     );
+
+  }
+
+  profileUser(){
+    return this.http.get(this.profileUrl, {})
+      .map(res=>res.json());
   }
 
   // return a promise
@@ -82,14 +97,31 @@ export class UserData {
     });
   }
 
-  private logError(err: any,userPassword:any) {
+  logError(err: any,userPassword:any) {
     this.storage.remove(this.HAS_LOGGED_IN);
     this.events.publish('user:login-error',userPassword);
   }
 
-  private loginSuccess(data: Response) {
+  loginSuccess(data: Response) {
     this.setAuthToken(data.headers.get('x-auth-token'));
     this.storage.set(this.HAS_LOGGED_IN, true);
     this.events.publish('user:login');
+  }
+
+
+
+
+  private handleError (error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }

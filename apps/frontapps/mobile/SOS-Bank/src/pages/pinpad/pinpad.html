@@ -29,7 +29,15 @@
 
   <div style="padding:15px;"></div>
 
-  <ion-grid>
+  <ion-grid *ngIf="status == 'LOADING'">
+  </ion-grid>
+
+  <ion-grid *ngIf="status == 'ERROR'">
+    <button ion-button color="secondary" (click)="load()">Recharger</button>
+  </ion-grid>
+
+
+  <ion-grid *ngIf="status == 'LOADED'">
     <ion-row >
       <ion-col width-33 center text-center>
         <button ion-button icon-only (click)="padClick(0)" [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-0"></button>

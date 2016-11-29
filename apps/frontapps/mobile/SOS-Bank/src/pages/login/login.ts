@@ -16,10 +16,17 @@ import {PinpadPage} from "../pinpad/pinpad";
 })
 export class LoginPage {
 
-  login: {username?: string, birthdate?: Date, remember?:boolean} = {
+  login:  {
+      username?: string
+    , birthdate?: Date
+    , remember?:boolean
+    , profile?: { firstname?: string, lastname?: string}
+  } = {
     remember: false
   };
+
   submitted = false;
+  status: string = "LOADING";
 
   constructor(
         public navCtrl: NavController
@@ -27,15 +34,34 @@ export class LoginPage {
       , public modalCtrl: ModalController
       , public params:NavParams
   ) {
-    console.log(params.data);
     this.login = params.data || {remember: false} ;
+    this.status = "LOADING";
   }
 
 
   ionViewDidLoad() {
-    console.log('Hello LoginPage Page');
+    //lire les cookies
+    this.status = "LOADING";
+    this.userData.profileUser().subscribe(
+      profile => {
+        if(profile.firstname == null && profile.lastname == null){
+          this.login.profile = null;
+        }else{
+          this.login.profile = profile;
+        }
+        this.status = "LOADED";
+      }
+    );
   }
 
+
+  onLoginProfile(){
+    this.navCtrl.setRoot(PinpadPage,this.login);
+  }
+
+  removeProfile(){
+    this.userData.invalidateProfile();
+  }
 
   onLogin(form) {
     this.submitted = true;

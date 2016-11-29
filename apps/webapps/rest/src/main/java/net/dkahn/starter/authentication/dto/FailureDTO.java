@@ -11,4 +11,5 @@ public class FailureDTO {
     private Integer attempts = 0;
     private Date lockedUntil = null;
     private String message = null;
+    private boolean disable;
 }

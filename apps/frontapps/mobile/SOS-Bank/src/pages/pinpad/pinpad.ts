@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
+import {NavController, NavParams, ToastController} from "ionic-angular";
 import {PinpadProvider} from "../../providers/pinpad-provider";
 import {LoginPage} from "../login/login";
 import {UserData} from "../../providers/user-data";
@@ -16,15 +16,17 @@ import {UserData} from "../../providers/user-data";
 })
 export class PinpadPage {
 
-  login: {username?: string, birthdate?: Date, remember?:boolean, password?:string} = {};
+  login:any = {};
   userPinpad: {pinpadId?: string, imgUrl?: Date} = {};
   count:number = 0;
+  status:string = 'LOADING';
 
   constructor(
       public navCtrl: NavController
     , public pinpad : PinpadProvider
     , public params:NavParams
     , public user : UserData
+    , public toastCtrl: ToastController
   ) {
     this.login = params.data;
     this.count = 0;
@@ -32,11 +34,31 @@ export class PinpadPage {
   }
 
   ionViewDidLoad() {
-    this.pinpad.getPinpad().subscribe(res => {
-      this.userPinpad = res;
-    });
+    this.load();
   }
 
+  load(){
+    this.pinpad.getPinpad().subscribe(
+      res => {
+        this.status = 'LOADED';
+        this.userPinpad = res;
+      },
+      err=>{
+        this.status = 'ERROR';
+
+        let toast = this.toastCtrl.create({
+          message: 'Erreur lors du chargement',
+          position: 'top',
+          showCloseButton : true,
+          closeButtonText : 'OK',
+          cssClass : 'toast-warning'
+        });
+
+        toast.present();
+
+      }
+    );
+  }
 
   goBack(){
     this.navCtrl.setRoot(LoginPage,this.login);
@@ -51,8 +73,32 @@ export class PinpadPage {
     this.count++;
     this.login.password+=num.toString();
     if(this.count==6){
-      this.user.login(this.login,this.userPinpad.pinpadId);
+      this.user.login(this.login,this.userPinpad.pinpadId)    .subscribe(
+        data => this.user.loginSuccess(data),
+        err => {
+          console.log(err);
+          this.errorLogin(err.json().message);
+          if(this.login.profile == null){
+            this.navCtrl.setRoot(LoginPage,this.login);
+          }
+        }
+      );
     }
+  }
+
+  errorLogin(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position: 'top',
+      showCloseButton : true,
+      closeButtonText : 'OK',
+      cssClass : 'toast-warning'
+    });
+
+    toast.present();
+    this.padReset();
+    this.load();
+
   }
 
   padReset(){

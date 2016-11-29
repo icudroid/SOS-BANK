@@ -7,7 +7,9 @@
 
     <h6>Mon application</h6>
     <h2>Bienvenue</h2>
-    <form #loginForm="ngForm" novalidate>
+
+
+    <form #loginForm="ngForm" novalidate *ngIf="status == 'LOADED' && login.profile == null">
       <ion-item class="nobkg">
         <ion-label floating color="primary">Identifiant</ion-label>
         <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" required>
@@ -38,6 +40,26 @@
         </ion-col>
       </ion-row>
     </form>
+
+    <div *ngIf="status == 'LOADED' && login.profile!=null" class="c-user">
+      <span class="o-user">{{login.profile.firstname}} {{login.profile.lastname}}</span>
+      <button clear ion-button icon-only (click)="removeProfile()">
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+
+      <div style="padding: 15px;"></div>
+
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button (click)="onLoginProfile()" type="submit" color="secondary" block>Se connecter</button>
+        </ion-col>
+      </ion-row>
+
+
+    </div>
+
+
+
   </ion-list>
 
 
@@ -49,11 +71,6 @@
     <ion-col width-50>
       <button (click)="presentForgotPassword()" class="white-label nobkg">
         <div>Codes d'accès oubliés</div>
-      </button>
-    </ion-col>
-    <ion-col width-50 text-right>
-      <button class="nobkg" class="white-label nobkg">
-        <div>L'offre BforBank</div>
       </button>
     </ion-col>
   </ion-row>

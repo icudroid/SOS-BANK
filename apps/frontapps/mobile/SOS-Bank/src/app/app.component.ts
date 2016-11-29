@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav, Events, MenuController} from 'ionic-angular';
+import {Platform, Nav, Events, MenuController, ToastController} from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import {LoginPage} from "../pages/login/login";
 import {UserData} from "../providers/user-data";
@@ -50,6 +50,7 @@ export class MyApp {
         , public events: Events
         , public userData: UserData
         , public menu: MenuController
+        , public toastCtrl: ToastController
   ) {
 
     platform.ready().then(() => {
@@ -109,6 +110,12 @@ export class MyApp {
     this.events.subscribe('user:logout', () => {
       this.enableMenu(false);
     });
+
+    this.events.subscribe('user:profile-invalidate', () => {
+      this.nav.setRoot(LoginPage);
+    });
+
+
   }
 
   enableMenu(loggedIn) {

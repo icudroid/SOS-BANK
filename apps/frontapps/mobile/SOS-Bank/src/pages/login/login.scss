@@ -28,4 +28,16 @@ page-login {
   .white-label{
     color: #{$footer-text-color};
   }
+
+  .o-user{
+    font-size: em(20px);
+    margin: 0 auto;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 10px;
+  }
+
+  .c-user{
+    text-align: center;
+  }
 }

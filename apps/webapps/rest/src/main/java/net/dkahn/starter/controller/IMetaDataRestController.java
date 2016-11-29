@@ -3,7 +3,7 @@ package net.dkahn.starter.controller;
 /**
  * Metadata pour les controlleurs
  */
-class IMetaDataRestController {
+public interface IMetaDataRestController {
 
     interface PinpadRestController {
         String PREFIX_PATH              = "/pinpad";
@@ -13,5 +13,7 @@ class IMetaDataRestController {
 
     interface UserRestController {
         String LOGOUT                   = "/logout";
+        String PROFILE                  = "/profile";
+        String INVALIDATE_PROFILE       = "/profile/invalidate";
     }
 }

@@ -44,6 +44,12 @@ public abstract class User extends BaseEntity {
     @Column
     protected Boolean blocked;
 
+    @Column
+    protected String firstname;
+
+    @Column
+    protected String lastname;
+
     @Convert(converter = LocalDateTimePersistenceConverter.class)
     protected LocalDateTime expirationDate;
 

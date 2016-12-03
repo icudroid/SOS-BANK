@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import {Events} from "ionic-angular";
 import {Observable} from "rxjs";
 import { Storage } from '@ionic/storage';
-import {environment} from "../app/environment";
+import {environment} from "../environment/environment";
 
 /*
   Generated class for the UserData provider.

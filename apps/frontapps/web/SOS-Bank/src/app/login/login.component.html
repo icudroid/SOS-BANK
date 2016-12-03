@@ -1,0 +1,115 @@
+<div class="user-login-5">
+  <div class="row bs-reset">
+    <div class="col-md-6 login-container bs-reset">
+      <img class="login-logo login-6" src="../assets/img/logo-mire.png"/>
+      <div class="login-content">
+        <h1>Connectez-vous</h1>
+        <p></p>
+        <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
+
+          <div class="alert alert-danger display-hide">
+            <button class="close" data-close="alert"></button>
+            <span>Enter any username and password. </span>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="username" class="col-sm-6 col-form-label">Identifiant</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="username"
+                     required
+                     [(ngModel)]="loginModel.username" name="username"
+                     #username="ngModel">
+
+              <div [hidden]="username.valid || username.pristine"
+                   class="alert alert-danger">
+                Votre identifiant est obligatoire
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="birthdate"  class="col-sm-6 col-form-label">Date de naissance</label>
+            <div class="col-sm-6">
+              <input type="date" class="form-control" id="birthdate"
+                     required
+                     [(ngModel)]="loginModel.birthdate" name="birthdate"
+                     #birthdate="ngModel">
+
+              <div [hidden]="birthdate.valid || birthdate.pristine"
+                   class="alert alert-danger">
+                Votre date de naissance est obligatoire
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label class="col-sm-6 col-form-label">Code secret</label>
+            <div class="col-sm-4">
+              <i *ngFor="let num of [0,1,2,3,4,5]" [ngClass]="activeState(num)" [ngClass]="activeState(num)" aria-hidden="true"></i>
+              <div style="clear: both"></div>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-link" type="button" (click)="padReset()"><i class="fa fa-times-circle-o fa-2" aria-hidden="true"></i></button>
+            </div>
+          </div>
+
+          <div class="form-group row text-center" *ngIf="userPinpad != null">
+            <div class="col-sm-4"  *ngFor="let num of [0,1,2,3,4,5,6,7,8]">
+              <button type="button" (click)="padClick(num)"  [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" [ngClass]="'pinpad-bg pinpad pinpad-'+num"></button>
+            </div>
+            <div class="col-sm-offset-4 col-sm-4">
+              <button type="button" (click)="padClick(9)"  [ngStyle]="{'background-image': 'url(' + userPinpad.imgUrl + ')'}" class="pinpad-bg pinpad pinpad-9"></button>
+            </div>
+          </div>
+
+          <div class="col-sm-12" *ngIf="userPinpad == null">
+            <button type="button" class="btn blue center-block" (click)="load()">Recharger</button>
+          </div>
+
+
+          <div class="text-right">
+            <button type="submit" class="btn blue" [disabled]="!loginForm.form.valid">Submit</button>
+          </div>
+
+        </form>
+      </div>
+      <div class="login-footer">
+        <div class="row bs-reset">
+          <div class="col-xs-5 bs-reset">
+            <ul class="login-social">
+              <li>
+                <a href="javascript:;">
+                  <i class="icon-social-facebook"></i>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:;">
+                  <i class="icon-social-twitter"></i>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:;">
+                  <i class="icon-social-dribbble"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-7 bs-reset">
+            <div class="login-copyright text-right">
+                <a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>
+                <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+                <a routerLink="/admin" routerLinkActive="active">Admin</a>
+                <a routerLink="/login" routerLinkActive="active">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 bs-reset">
+        <jquery-backstretch></jquery-backstretch>
+    </div>
+  </div>
+</div>

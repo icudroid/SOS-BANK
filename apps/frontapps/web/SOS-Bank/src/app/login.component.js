@@ -23,7 +23,7 @@ var LoginComponent = (function () {
             if (_this.authService.isLoggedIn) {
                 // Get the redirect URL from our auth service
                 // If no redirect has been set, use the default
-                var redirect = _this.authService.redirectUrl ? _this.authService.redirectUrl : '/admin';
+                var redirect = _this.authService.redirectUrl ? _this.authService.redirectUrl : '/connected';
                 // Set our navigation extras object
                 // that passes on our global query params and fragment
                 var navigationExtras = {

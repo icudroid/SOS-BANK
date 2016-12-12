@@ -2,8 +2,8 @@
 jQuery File Upload
 ***/
 
-.blueimp-gallery .close {  
-  background-image: url("../img/portlet-remove-icon-white.png") !important;
+.blueimp-gallery .close {
+  background-image: url("#{$global-img-path}/portlet-remove-icon-white.png") !important;
   margin-top: -2px;
 }
 

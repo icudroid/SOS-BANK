@@ -11,6 +11,8 @@ import { LoginComponent }       from './login/login.component';
 
 import { DialogService }        from './dialog.service';
 import {HttpModule, JsonpModule} from "@angular/http";
+
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { JqueryBackstretchComponent } from './shared/component/jquery-backstretch/jquery-backstretch.component';
 
 @NgModule({
@@ -29,6 +31,7 @@ import { JqueryBackstretchComponent } from './shared/component/jquery-backstretc
     JqueryBackstretchComponent
   ],
   providers: [
+    CookieService,
     DialogService
   ],
   bootstrap: [ AppComponent ]

@@ -1,0 +1,15 @@
+<div class="page-sidebar-closed-hide-logo page-container-bg-solid page-boxed" [ngClass]="{'page-sidebar-closed': sideMenuClose, 'page-header-fixed':sideMenuClose}">
+<app-header (menuStateUpdated)="onMenuState($event)"></app-header>
+<div class="clearfix"></div>
+<div class="container">
+    <app-sidebar [height]="componentHeight" [sideBarClose]="sideMenuClose"></app-sidebar>
+    <div class="page-content-wrapper">
+      <div #pageContent class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  <app-footer></app-footer>
+</div>
+</div>
+
+

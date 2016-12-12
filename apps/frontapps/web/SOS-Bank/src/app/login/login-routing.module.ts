@@ -4,6 +4,7 @@ import { LoginComponent }       from './login.component';
 import {AuthGuard} from "../shared/auth-guard.service";
 import {AuthService} from "../shared/auth.service";
 import {PinpadService} from "./shared/pinpad.service";
+import {CookieService} from 'angular2-cookie/core';
 
 const loginRoutes: Routes = [
   { path: 'login', component: LoginComponent }
@@ -17,6 +18,7 @@ const loginRoutes: Routes = [
     RouterModule
   ],
   providers: [
+    CookieService,
     AuthGuard,
     AuthService,
     PinpadService

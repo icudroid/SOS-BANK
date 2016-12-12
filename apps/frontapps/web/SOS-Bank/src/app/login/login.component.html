@@ -101,7 +101,7 @@
             <div class="login-copyright text-right">
                 <a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>
                 <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
-                <a routerLink="/admin" routerLinkActive="active">Admin</a>
+                <a routerLink="/connected" routerLinkActive="active">Admin</a>
                 <a routerLink="/login" routerLinkActive="active">Login</a>
             </div>
           </div>
@@ -109,7 +109,7 @@
       </div>
     </div>
     <div class="col-md-6 bs-reset">
-        <jquery-backstretch></jquery-backstretch>
+        <jquery-backstretch [config]="backstretchConfig" [images]="backstretchImgs"></jquery-backstretch>
     </div>
   </div>
 </div>

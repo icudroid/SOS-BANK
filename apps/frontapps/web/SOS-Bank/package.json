@@ -28,7 +28,9 @@
     "font-awesome": "*",
     "simple-line-icons": "*",
     "bootstrap-switch": "*",
-    "jquery.backstretch": "*"
+    "jquery.backstretch": "*",
+    "jquery-slimscroll" : "*",
+    "angular2-cookie" : "1.2.5"
   },
   "devDependencies": {
     "@angular/compiler-cli": "2.2.1",

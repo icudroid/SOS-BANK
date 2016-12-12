@@ -29,6 +29,18 @@ export class LoginComponent implements OnInit{
 
   userPinpad: {pinpadId?: string, imgUrl?: Date} = null;
 
+  backstretchImgs:Array<string> = [
+    "../assets/pages/img/login/bg1.jpg",
+    "../assets/pages/img/login/bg2.jpg",
+    "../assets/pages/img/login/bg3.jpg"
+  ];
+
+  backstretchConfig = {
+    fade: 1000,
+    duration: 8000
+  };
+
+
   get diagnostic() {
     return JSON.stringify(this.loginModel);
   }
@@ -48,7 +60,7 @@ export class LoginComponent implements OnInit{
       if (this.authService.isLoggedIn) {
         // Get the redirect URL from our auth service
         // If no redirect has been set, use the default
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin';
+        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/connected';
 
         // Set our navigation extras object
         // that passes on our global query params and fragment

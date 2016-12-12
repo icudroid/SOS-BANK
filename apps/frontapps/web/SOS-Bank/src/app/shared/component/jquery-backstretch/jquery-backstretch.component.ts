@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input} from '@angular/core';
 
 @Component({
   selector: 'jquery-backstretch',
@@ -7,16 +7,12 @@ import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/
 export class JqueryBackstretchComponent implements OnInit {
   @ViewChild('backstretch') el:ElementRef;
 
-  images:Array<string> = [
-    "../assets/pages/img/login/bg1.jpg",
-    "../assets/pages/img/login/bg2.jpg",
-    "../assets/pages/img/login/bg3.jpg"
-  ];
 
-  config = {
-    fade: 1000,
-    duration: 8000
-  };
+  @Input()
+  images:Array<string>;
+
+  @Input()
+  config;
 
   constructor() { }
 

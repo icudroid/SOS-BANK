@@ -7,8 +7,8 @@ import {CanDeactivateGuard} from "./shared/can-deactivate-guard.service";
 
 const appRoutes: Routes = [
   {
-    path: 'admin',
-    loadChildren: 'app/admin/admin.module#AdminModule',
+    path: 'connected',
+    loadChildren: 'app/connected/connected.module#ConnectedModule',
     canLoad: [AuthGuard]
   },
   {

@@ -7,10 +7,97 @@ include 'core:services:common'
 
 include 'apps:distrib'
 include 'apps:webapps:common'
-include 'apps:webapps:modules:security:domain'
-include 'apps:webapps:modules:security:repository'
-include 'apps:webapps:modules:security:service'
-include 'apps:webapps:modules:security:webapp'
+
+include 'apps:modules:security:domain'
+include 'apps:modules:security:repository'
+include 'apps:modules:security:service'
+include 'apps:modules:security:webapp'
+include 'apps:modules:security:rest'
+
+include 'apps:modules:operations:domain'
+include 'apps:modules:operations:repository'
+include 'apps:modules:operations:service'
+include 'apps:modules:operations:webapp'
+include 'apps:modules:operations:rest'
+
+
+include 'apps:modules:budgets:domain'
+include 'apps:modules:budgets:repository'
+include 'apps:modules:budgets:service'
+include 'apps:modules:budgets:webapp'
+include 'apps:modules:budgets:rest'
+
+
+include 'apps:modules:cartes:domain'
+include 'apps:modules:cartes:repository'
+include 'apps:modules:cartes:service'
+include 'apps:modules:cartes:webapp'
+include 'apps:modules:cartes:rest'
+
+
+include 'apps:modules:comptes:domain'
+include 'apps:modules:comptes:repository'
+include 'apps:modules:comptes:service'
+include 'apps:modules:comptes:webapp'
+include 'apps:modules:comptes:rest'
+
+
+include 'apps:modules:documents:domain'
+include 'apps:modules:documents:repository'
+include 'apps:modules:documents:service'
+include 'apps:modules:documents:webapp'
+include 'apps:modules:documents:rest'
+
+
+include 'apps:modules:documents:domain'
+include 'apps:modules:documents:repository'
+include 'apps:modules:documents:service'
+include 'apps:modules:documents:webapp'
+include 'apps:modules:documents:rest'
+
+
+include 'apps:modules:individus:domain'
+include 'apps:modules:individus:repository'
+include 'apps:modules:individus:service'
+include 'apps:modules:individus:webapp'
+include 'apps:modules:individus:rest'
+
+
+include 'apps:modules:parainages:domain'
+include 'apps:modules:parainages:repository'
+include 'apps:modules:parainages:service'
+include 'apps:modules:parainages:webapp'
+include 'apps:modules:parainages:rest'
+
+
+include 'apps:modules:prelevements:domain'
+include 'apps:modules:prelevements:repository'
+include 'apps:modules:prelevements:service'
+include 'apps:modules:prelevements:webapp'
+include 'apps:modules:prelevements:rest'
+
+
+include 'apps:modules:ribs:domain'
+include 'apps:modules:ribs:repository'
+include 'apps:modules:ribs:service'
+include 'apps:modules:ribs:webapp'
+include 'apps:modules:ribs:rest'
+
+
+include 'apps:modules:virements:domain'
+include 'apps:modules:virements:repository'
+include 'apps:modules:virements:service'
+include 'apps:modules:virements:webapp'
+include 'apps:modules:virements:rest'
+
+
+include 'apps:modules:cheques:domain'
+include 'apps:modules:cheques:repository'
+include 'apps:modules:cheques:service'
+include 'apps:modules:cheques:webapp'
+include 'apps:modules:cheques:rest'
+
+
 
 include 'apps:webapps:frontend'
 include 'apps:webapps:backoffice'
@@ -27,3 +114,10 @@ include 'core:services:mail'
 include 'apps:webapps:rest'
 include 'tools:service'
 
+
+include 'apps:restapps:common'
+include 'apps:restapps:rest'
+
+
+include 'apps:frontapps:web:SOS-Bank'
+include 'apps:frontapps:mobile:SOS-Bank'

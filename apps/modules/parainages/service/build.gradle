@@ -1,0 +1,21 @@
+group 'net.dkahn.starter.parainages.services'
+
+apply plugin: 'org.springframework.boot'
+
+bootRepackage {
+    enabled = false //we want 'blessed' version numbers, but a not executable jar
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+
+
+    compile project(':tools:common')
+    compile project(':tools:service')
+    compile("org.springframework.security:spring-security-core")
+    compile project(':apps:modules:parainages:domain')
+    compile project(':apps:modules:parainages:repository')
+
+
+}
+

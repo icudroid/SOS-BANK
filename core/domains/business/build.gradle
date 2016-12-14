@@ -24,7 +24,7 @@ dependencies {
     compile libs.queryDsl
 
 
-    compile project(':apps:webapps:modules:security:domain')
+    compile project(':apps:modules:security:domain')
 }
 
 task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {

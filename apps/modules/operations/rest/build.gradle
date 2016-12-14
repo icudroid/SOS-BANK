@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.apps.modules.operations.rest'
+
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    compile project(':apps:modules:operations:service')
+    compile project(':tools:common')
+}
+
+bootRepackage.enabled = false

@@ -1,0 +1,37 @@
+server:
+  port: 8080
+spring:
+    jpa:
+        open_in_view: true
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        generate-ddl: false
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                cache:
+                    use_second_level_cache: true
+                    provider_class: org.hibernate.cache.EhCacheProvider
+
+    datasource:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://localhost/starter
+        username: starter
+        password: starter
+        maxActive: 100
+        maxWait: 1000
+        poolPreparedStatements: true
+        defaultAutoCommit: true
+        validationQuery: SELECT 1
+
+env:
+  baseUrl: http://localhost/rest/
+
+pinpad:
+  length: 10
+  imageWidth: 46
+  imageHeight: 46
+  imageExtention: .png
+  base : /home/dev/image/mire/
+  duration: 120

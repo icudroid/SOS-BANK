@@ -1,0 +1,63 @@
+group 'net.dkahn.starter.individus.domains'
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/main/generated']
+        }
+    }
+}
+
+
+configurations {
+    querydslapt
+}
+
+
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    querydslapt libs.queryDslApt
+    compile libs.queryDsl
+
+
+    compile project(':tools:domain')
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/generated')
+    }
+}
+
+
+
+bootRepackage.enabled = false

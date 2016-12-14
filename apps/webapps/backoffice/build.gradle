@@ -25,7 +25,7 @@ configurations {
 }
 
 dependencies {
-    compile project(':apps:webapps:modules:security:webapp')
+    compile project(':apps:modules:security:webapp')
     compile project(':apps:webapps:common')
     compile project(':tools:common')
 }

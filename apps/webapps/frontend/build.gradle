@@ -33,7 +33,7 @@ dependencies {
     //compile 'org.springframework.boot:spring-boot-starter-redis'
 
     compile project(':apps:webapps:common')
-    compile project(':apps:webapps:modules:security:service')
+    compile project(':apps:modules:security:service')
     compile project(':tools:common')
 }
 

@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.apps.modules.individus.rest'
+
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    compile project(':apps:modules:individus:service')
+    compile project(':tools:common')
+}
+
+bootRepackage.enabled = false

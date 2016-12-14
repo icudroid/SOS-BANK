@@ -1,0 +1,28 @@
+group 'net.dkahn.starter.apps.webapps'
+
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+
+
+    compile project(':apps:restapps:common'),
+
+            project(':apps:modules:security:service'),
+
+            project(':tools:common'),
+
+            project(':core:domains:business'),
+            project(':core:repositories:business'),
+            project(':core:services:common'),
+            project(':core:services:security')
+
+}
+
+
+bootRepackage.enabled = true

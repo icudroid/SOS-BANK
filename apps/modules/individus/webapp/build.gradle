@@ -1,0 +1,12 @@
+group 'net.dkahn.starter.apps.modules.individus.webapp'
+
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    compile project(':apps:webapps:common')
+    compile project(':apps:modules:individus:service')
+    compile project(':tools:common')
+}
+
+bootRepackage.enabled = false

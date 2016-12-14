@@ -1,0 +1,11 @@
+group 'net.dkahn.starter.apps.modules.cheques.rest'
+
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    compile project(':apps:modules:cheques:service')
+    compile project(':tools:common')
+}
+
+bootRepackage.enabled = false

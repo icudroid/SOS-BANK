@@ -1,3 +1,3 @@
 # SOS-BANK
 
-POC du banque en ligne
+POC banque en ligne

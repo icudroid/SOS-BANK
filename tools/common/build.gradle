@@ -17,6 +17,8 @@ dependencies {
     compile libs.commonsLang
     compile libs.commonsIo
 
+    compile libs.bouncycastle
+
     provided libs.lombok
 
 }

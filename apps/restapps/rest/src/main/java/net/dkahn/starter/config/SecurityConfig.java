@@ -22,6 +22,9 @@ import net.dkahn.starter.services.security.IPinpadService;
 import net.dkahn.starter.services.security.IProfileTokenService;
 import net.dkahn.starter.services.security.IUserService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.dao.ReflectionSaltSource;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.dao.SystemWideSaltSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -54,6 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Resource
 	private IPinpadService pinpadService;
+
+	@Bean
+	public SaltSource saltSource(){
+		ReflectionSaltSource saltSource = new ReflectionSaltSource();
+		saltSource.setUserPropertyToUse("login");
+		return saltSource;
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder(){
@@ -144,6 +154,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		PinpadAuthenticationProvider authenticationProvider = new PinpadAuthenticationProvider();
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		authenticationProvider.setSaltSource(saltSource());
 		authenticationProvider.setUserDetailsService(authenticationUserService);
 		authenticationProvider.setPinpadService(pinpadService);
 		authenticationProvider.setUserService(userService);

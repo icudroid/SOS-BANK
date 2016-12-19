@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "app_user")
+@Table
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +21,7 @@ import javax.persistence.*;
 )
 public abstract class InformationPersonnel {
     @Id
+    @SequenceGenerator(name = "info_perso", sequenceName = "info_perso_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "info_perso")
     protected Long id;
 }

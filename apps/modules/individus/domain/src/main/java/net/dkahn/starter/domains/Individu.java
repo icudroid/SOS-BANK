@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.dkahn.starter.domains.information.InformationPersonnel;
 import net.dkahn.starter.tools.domain.BaseEntity;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "app_user")
+@Table
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +27,9 @@ import java.util.List;
 )
 public abstract class Individu extends BaseEntity {
 
-
     @Id
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     protected String id;
 
     protected LocalDateTime entreeEnRelation;
@@ -53,13 +55,13 @@ public abstract class Individu extends BaseEntity {
     @Embedded
     protected Commune communeDeNaissance;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     protected List<DocumentEntreeEnRelation> documentsEntreeEnRelation;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     protected List<MoyenDeContact> moyensDeContact;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     protected List<InformationPersonnel> informationsPersonnel;
 
 

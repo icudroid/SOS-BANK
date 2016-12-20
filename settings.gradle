@@ -111,7 +111,7 @@ include 'docs'
 include 'tools:domain'
 include 'tools:repository'
 include 'core:services:security'
-include 'core:appliation-services:mail'
+include 'core:application-services:mail'
 include 'apps:webapps:rest'
 include 'tools:service'
 

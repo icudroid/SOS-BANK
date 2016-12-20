@@ -7,6 +7,7 @@ include 'core:services:common'
 
 include 'apps:distrib'
 include 'apps:webapps:common'
+include 'apps:webapps:tools:banking-stub'
 
 include 'apps:modules:security:domain'
 include 'apps:modules:security:repository'

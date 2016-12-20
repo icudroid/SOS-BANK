@@ -1,0 +1,8 @@
+{
+  "name": "banking-stub",
+  "private": "true",
+  "authors": [
+    "dimitri@d-kahn.net"
+  ],
+  "devDependencies": {}
+}

@@ -1,0 +1,26 @@
+spring:
+    jpa:
+        open_in_view: true
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        generate-ddl: false
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.HSQLDialect
+                cache:
+                    use_second_level_cache: true
+                    provider_class: org.hibernate.cache.EhCacheProvider
+
+    datasource:
+        driverClassName: org.hsqldb.jdbc.JDBCDriver
+        url: jdbc:hsqldb:mem:scratchdb
+
+
+pinpad:
+  length: 10
+  imageWidth: 46
+  imageHeight: 46
+  imageExtention: .png
+  base : /home/dev/image/mire/
+  duration: 120

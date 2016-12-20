@@ -6,6 +6,17 @@
 Documentation
 =============
 
+
+Introduction
+------------
+
+Découpage du projet
+~~~~~~~~~~~~~~~~~~~
+    .. toctree::
+        _docs/projet/project.rst
+
+
+
 Technique
 ---------
 

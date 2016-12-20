@@ -44,7 +44,7 @@ Exemple de fichier `application.yml` sur la machine de DEV :
         static.url: http://localhost/statics
         adminEntityProfile: PROFILE_ADMIN_ENTITY
         upload:
-            directory: /home/jhlali/statics/entities
+            directory: /home/dev/upload
         http:
             proxy:
                 host:
